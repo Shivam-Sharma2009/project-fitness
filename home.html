@@ -994,13 +994,16 @@
         }
 
         async function handleLogout() {
-            await fetch("http://localhost:5000/logout", {
-                method: "POST",
-                credentials: "include"
-            });
-            localStorage.removeItem("userUid");
-            localStorage.removeItem("userEmail");
-            window.location.reload();
+            try {
+                await fetch("https://project-fitness-drab.vercel.app/api/logout", {
+                    method: "POST",
+                    credentials: "include"
+                });
+            } finally {
+                localStorage.removeItem("userUid");
+                localStorage.removeItem("userEmail");
+                window.location.href = "login.html";
+            }
         }
     </script>
 
