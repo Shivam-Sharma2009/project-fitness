@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PW Care - Community Support</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#031225;
+    color:white;
+}
+
+header{
+    background:#020d1d;
+    padding:20px;
+    text-align:center;
+    border-bottom:1px solid #1e3552;
+}
+
+header h1{
+    color:#1677ff;
+}
+
+.hero{
+    text-align:center;
+    padding:60px 20px;
+}
+
+.hero h2{
+    font-size:40px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    color:#bbb;
+    max-width:700px;
+    margin:auto;
+    line-height:1.7;
+}
+
+.features{
+    width:90%;
+    margin:40px auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#071a30;
+    border:1px solid #26384e;
+    border-radius:12px;
+    padding:25px;
+    text-align:center;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    border-color:#1677ff;
+}
+
+.icon{
+    font-size:45px;
+}
+
+.card h3{
+    margin:15px 0;
+}
+
+.card p{
+    color:#bbb;
+    line-height:1.6;
+}
+
+.donate-section{
+    width:90%;
+    max-width:800px;
+    margin:50px auto;
+    background:#071a30;
+    padding:30px;
+    border-radius:12px;
+    border:1px solid #26384e;
+}
+
+.donate-section h2{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+input, textarea{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:6px;
+    background:#10243f;
+    color:white;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    background:#1677ff;
+    border:none;
+    border-radius:6px;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    margin-top:40px;
+    border-top:1px solid #26384e;
+    color:#888;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+    <a href="home.html" style="color:#9ab3cf; text-decoration:none; font-size:14px; position:absolute; left:20px; top:25px;">← Back to Home</a>
+    <h1>🤝 PW Care</h1>
+    <p>Fitness For Everyone</p>
+</header>
+
+<section class="hero">
+    <h2>Support. Donate. Empower.</h2>
+    <p>
+        PW Care connects donors with people who need support.
+        Donate sports equipment, fitness accessories, or financial
+        assistance and help someone achieve a healthier life.
+    </p>
+</section>
+
+<section class="features">
+
+    <div class="card">
+        <div class="icon">♿</div>
+        <h3>Accessibility Support</h3>
+        <p>Special support for physically challenged users.</p>
+    </div>
+
+    <div class="card">
+        <div class="icon">❤️</div>
+        <h3>Donate Money</h3>
+        <p>Support people who need financial help.</p>
+    </div>
+
+    <div class="card">
+        <div class="icon">🏏</div>
+        <h3>Donate Equipment</h3>
+        <p>Donate sports kits, shoes, bats and fitness tools.</p>
+    </div>
+
+    <div class="card">
+        <div class="icon">🎯</div>
+        <h3>Request Help</h3>
+        <p>People can request fitness and sports support.</p>
+    </div>
+
+    <div class="card">
+        <div class="icon">🏆</div>
+        <h3>Reward Donors</h3>
+        <p>Earn badges and recognition for helping others.</p>
+    </div>
+
+    <div class="card">
+        <div class="icon">🌍</div>
+        <h3>Community Impact</h3>
+        <p>Track how your donations are changing lives.</p>
+    </div>
+
+</section>
+
+<section class="donate-section">
+
+    <h2>Donate or Request Help</h2>
+    <div id="careAlert" style="display:none; background:rgba(82, 196, 26, 0.15); border:1px solid #52c41a; color:#73d13d; padding:12px; border-radius:6px; margin-bottom:15px; text-align:center;">
+        Thank you! Your request/donation details have been submitted successfully.
+    </div>
+
+    <form id="careForm" onsubmit="event.preventDefault(); document.getElementById('careAlert').style.display='block'; this.reset();">
+        <input type="text" placeholder="Full Name" required>
+
+        <input type="tel" placeholder="Phone Number" required>
+
+        <input type="text" placeholder="Address / Location" required>
+
+        <input type="email" placeholder="Email Address" required>
+
+        <input type="text" placeholder="Donation Item / Requirement" required>
+
+        <textarea rows="5" placeholder="Write your message"></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+
+</section>
+
+<footer>
+    © 2026 PW Care | FitQuest AI Community Support
+</footer>
+
+</body>
+</html>

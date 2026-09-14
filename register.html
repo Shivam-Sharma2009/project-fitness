@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SportFit Register</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#071a30;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px 0;
+}
+
+.container{
+    width:420px;
+    background:#071a30;
+    padding:30px;
+    border-radius:12px;
+    border:1px solid #1c3d63;
+    box-shadow:0 8px 24px rgba(0,0,0,0.3);
+}
+
+h2{
+    color:white;
+    text-align:center;
+    margin-bottom:8px;
+}
+
+.provider-badge{
+    text-align:center;
+    color:#8fa7c4;
+    font-size:12px;
+    margin-bottom:18px;
+}
+.provider-badge span{
+    color:#52a8ff;
+    font-weight:600;
+}
+
+.alert{
+    padding:10px 14px;
+    border-radius:6px;
+    margin-bottom:15px;
+    font-size:13px;
+    line-height:1.4;
+    display:none;
+}
+.alert-error{
+    background:rgba(255, 77, 79, 0.15);
+    border:1px solid #ff4d4f;
+    color:#ff7875;
+}
+.alert-success{
+    background:rgba(82, 196, 26, 0.15);
+    border:1px solid #52c41a;
+    color:#73d13d;
+}
+
+.input-box{
+    margin-bottom:15px;
+}
+
+label{
+    color:white;
+    display:block;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+.field-hint{
+    font-size:11px;
+    color:#7a94b3;
+    margin-top:4px;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #1c3d63;
+    background:#031225;
+    color:white;
+    border-radius:6px;
+    outline:none;
+    box-sizing:border-box;
+    font-size:14px;
+    transition:border-color 0.2s;
+}
+input:focus,
+select:focus{
+    border-color:#126cff;
+}
+input.invalid-input{
+    border-color:#ff4d4f;
+}
+
+h3{
+    color:white;
+    font-size:15px;
+    margin:15px 0 10px 0;
+}
+
+.checkbox-group{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.checkbox-group label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    cursor:pointer;
+    background:#031225;
+    padding:8px 10px;
+    border-radius:6px;
+    border:1px solid #1c3d63;
+}
+
+.checkbox-group input[type="radio"]{
+    width:auto;
+    cursor:pointer;
+}
+
+.btn{
+    width:100%;
+    padding:12px;
+    background:#126cff;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:10px;
+    transition:background 0.2s;
+}
+
+.btn:hover{
+    background:#0c5ae0;
+}
+
+.btn:disabled{
+    background:#3f587d;
+    cursor:not-allowed;
+}
+
+p{
+    text-align:center;
+    margin-top:15px;
+    color:white;
+    font-size:14px;
+}
+
+a{
+    color:#4da3ff;
+    text-decoration:none;
+}
+a:hover{
+    text-decoration:underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Create Account</h2>
+<div class="provider-badge">Supported: <span>Gmail</span> • <span>Yahoo</span> • <span>Microsoft</span></div>
+
+<div id="alertBox" class="alert"></div>
+
+<form id="registerForm">
+
+<div class="input-box">
+<label for="fullName">Full Name</label>
+<input type="text" id="fullName" placeholder="Enter Full Name" required>
+</div>
+
+<div class="input-box">
+<label for="email">Email Address</label>
+<input
+type="email"
+id="email"
+placeholder="user@gmail.com / user@outlook.com"
+required>
+<div class="field-hint">Only @gmail, @yahoo, @outlook, @hotmail, @live domains accepted</div>
+</div>
+
+<div class="input-box">
+<label for="phone">Phone Number</label>
+<input
+type="tel"
+id="phone"
+placeholder="10-digit number"
+pattern="[0-9]{10}"
+maxlength="10"
+required>
+</div>
+
+<div class="input-box">
+<label for="age">Age</label>
+<input
+type="number"
+id="age"
+min="10"
+max="100"
+placeholder="Enter Age"
+required>
+</div>
+
+<div class="input-box">
+<label for="gender">Gender</label>
+<select id="gender" required>
+<option value="">Select Gender</option>
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+<option value="Other">Other</option>
+</select>
+</div>
+
+<div class="input-box">
+<label for="password">Password</label>
+<input
+type="password"
+id="password"
+placeholder="Minimum 6 Characters"
+minlength="6"
+required>
+</div>
+
+<div class="input-box">
+<label for="confirmPassword">Confirm Password</label>
+<input
+type="password"
+id="confirmPassword"
+placeholder="Re-enter Password"
+minlength="6"
+required>
+</div>
+
+<h3>Accessibility Preference</h3>
+
+<div class="checkbox-group">
+    <label>
+        <input type="radio" name="accessibility" value="Vision Impaired">
+        👁️ Vision Impaired
+    </label>
+    <label>
+        <input type="radio" name="accessibility" value="Hearing Impaired">
+        👂 Hearing Impaired
+    </label>
+    <label>
+        <input type="radio" name="accessibility" value="Mobility Support">
+        🦽 Mobility Support
+    </label>
+    <label>
+        <input type="radio" name="accessibility" value="Standard Mode" checked>
+        😊 Standard Mode
+    </label>
+</div>
+
+<button type="submit" id="submitBtn" class="btn">
+Register
+</button>
+
+<p>
+Already have an account?
+<a href="login.html">Login</a>
+</p>
+
+</form>
+
+</div>
+
+<script>
+const BACKEND_URL = "http://localhost:5000";
+
+const form = document.getElementById("registerForm");
+const emailInput = document.getElementById("email");
+const alertBox = document.getElementById("alertBox");
+const submitBtn = document.getElementById("submitBtn");
+
+function isAllowedEmailDomain(email) {
+    if (!email) return false;
+    const cleanEmail = email.trim().toLowerCase();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(cleanEmail)) return false;
+
+    const domain = cleanEmail.split("@")[1];
+    if (!domain) return false;
+
+    // Gmail
+    const isGoogle = domain === "gmail.com" || domain === "googlemail.com";
+    
+    // Yahoo
+    const isYahoo = domain === "yahoo.com" || domain === "ymail.com" || /^yahoo\.[a-z]{2,3}(\.[a-z]{2})?$/.test(domain);
+    
+    // Microsoft
+    const isMicrosoft = domain === "outlook.com" || 
+                        domain === "hotmail.com" || 
+                        domain === "live.com" || 
+                        domain === "msn.com" || 
+                        domain === "microsoft.com" ||
+                        /^outlook\.[a-z]{2,3}(\.[a-z]{2})?$/.test(domain) ||
+                        /^hotmail\.[a-z]{2,3}(\.[a-z]{2})?$/.test(domain);
+
+    return isGoogle || isYahoo || isMicrosoft;
+}
+
+function showAlert(message, isError = true) {
+    alertBox.textContent = message;
+    alertBox.className = "alert " + (isError ? "alert-error" : "alert-success");
+    alertBox.style.display = "block";
+}
+
+function hideAlert() {
+    alertBox.style.display = "none";
+    emailInput.classList.remove("invalid-input");
+}
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideAlert();
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const email = emailInput.value.trim().toLowerCase();
+    const phone = document.getElementById("phone").value.trim();
+    const age = document.getElementById("age").value.trim();
+    const gender = document.getElementById("gender").value;
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    
+    const selectedAccessibility = document.querySelector('input[name="accessibility"]:checked');
+    const accessibility = selectedAccessibility ? selectedAccessibility.value : "Standard Mode";
+
+    if (!isAllowedEmailDomain(email)) {
+        emailInput.classList.add("invalid-input");
+        showAlert("Access restricted: Only valid Gmail (@gmail.com), Yahoo (@yahoo.com), or Microsoft (@outlook.com, @hotmail.com, @live.com) emails are permitted.");
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showAlert("Password and Confirm Password do not match!");
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Creating Account...";
+
+    try {
+        const res = await fetch(`${BACKEND_URL}/signup`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: fullName,
+                email,
+                password,
+                phone,
+                age,
+                gender,
+                accessibility
+            })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.message || "Signup failed. Please try again.");
+        }
+
+        showAlert("Account created successfully! Redirecting to login...", false);
+        
+        setTimeout(() => {
+            window.location.href = "login.html";
+        }, 1200);
+
+    } catch (err) {
+        console.error("Signup error:", err);
+        showAlert(err.message || "Unable to connect to backend server.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Register";
+    }
+});
+</script>
+
+</body>
+</html>

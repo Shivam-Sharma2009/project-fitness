@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SportFit Login</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#031225;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.container{
+    width:420px;
+    background:#071a30;
+    padding:30px;
+    border-radius:12px;
+    border:1px solid #1c3d63;
+    box-shadow:0 8px 24px rgba(0,0,0,0.3);
+}
+
+h2{
+    color:white;
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.provider-badge{
+    text-align:center;
+    color:#8fa7c4;
+    font-size:12px;
+    margin-bottom:18px;
+}
+.provider-badge span{
+    color:#52a8ff;
+    font-weight:600;
+}
+
+.alert{
+    padding:10px 14px;
+    border-radius:6px;
+    margin-bottom:15px;
+    font-size:13px;
+    line-height:1.4;
+    display:none;
+}
+.alert-error{
+    background:rgba(255, 77, 79, 0.15);
+    border:1px solid #ff4d4f;
+    color:#ff7875;
+}
+.alert-success{
+    background:rgba(82, 196, 26, 0.15);
+    border:1px solid #52c41a;
+    color:#73d13d;
+}
+
+.input-box{
+    margin-bottom:15px;
+}
+
+label{
+    color:white;
+    display:block;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+.field-hint{
+    font-size:11px;
+    color:#7a94b3;
+    margin-top:4px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:1px solid #1c3d63;
+    background:#031225;
+    color:white;
+    border-radius:6px;
+    outline:none;
+    box-sizing:border-box;
+    font-size:14px;
+    transition:border-color 0.2s;
+}
+input:focus{
+    border-color:#126cff;
+}
+input.invalid-input{
+    border-color:#ff4d4f;
+}
+
+.btn{
+    width:100%;
+    padding:12px;
+    background:#126cff;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:background 0.2s;
+    margin-top:5px;
+}
+
+.btn:hover{
+    background:#0c5ae0;
+}
+
+.btn:disabled{
+    background:#3f587d;
+    cursor:not-allowed;
+}
+
+p{
+    text-align:center;
+    margin-top:15px;
+    color:white;
+    font-size:14px;
+}
+
+a{
+    color:#4da3ff;
+    text-decoration:none;
+}
+a:hover{
+    text-decoration:underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Login</h2>
+<div class="provider-badge">Supported: <span>Gmail</span> • <span>Yahoo</span> • <span>Microsoft</span></div>
+
+<div id="alertBox" class="alert"></div>
+
+<form id="loginForm">
+
+<div class="input-box">
+<label for="email">Email Address</label>
+<input
+type="email"
+id="email"
+placeholder="user@gmail.com / user@outlook.com"
+required>
+<div class="field-hint">Only @gmail, @yahoo, @outlook, @hotmail, @live domains accepted</div>
+</div>
+
+<div class="input-box">
+<label for="password">Password</label>
+<input
+type="password"
+id="password"
+placeholder="Enter Password"
+minlength="6"
+required>
+</div>
+
+<button type="submit" id="submitBtn" class="btn">
+Login
+</button>
+
+<p>
+Don't have an account?
+<a href="register.html">Register</a>
+</p>
+
+</form>
+
+</div>
+
+<script>
+const BACKEND_URL = "http://localhost:5000";
+
+const form = document.getElementById("loginForm");
+const emailInput = document.getElementById("email");
+const alertBox = document.getElementById("alertBox");
+const submitBtn = document.getElementById("submitBtn");
+
+function isAllowedEmailDomain(email) {
+    if (!email) return false;
+    const cleanEmail = email.trim().toLowerCase();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(cleanEmail)) return false;
+
+    const domain = cleanEmail.split("@")[1];
+    if (!domain) return false;
+
+    // Gmail
+    const isGoogle = domain === "gmail.com" || domain === "googlemail.com";
+    
+    // Yahoo
+    const isYahoo = domain === "yahoo.com" || domain === "ymail.com" || /^yahoo\.[a-z]{2,3}(\.[a-z]{2})?$/.test(domain);
+    
+    // Microsoft
+    const isMicrosoft = domain === "outlook.com" || 
+                        domain === "hotmail.com" || 
+                        domain === "live.com" || 
+                        domain === "msn.com" || 
+                        domain === "microsoft.com" ||
+                        /^outlook\.[a-z]{2,3}(\.[a-z]{2})?$/.test(domain) ||
+                        /^hotmail\.[a-z]{2,3}(\.[a-z]{2})?$/.test(domain);
+
+    return isGoogle || isYahoo || isMicrosoft;
+}
+
+function showAlert(message, isError = true) {
+    alertBox.textContent = message;
+    alertBox.className = "alert " + (isError ? "alert-error" : "alert-success");
+    alertBox.style.display = "block";
+}
+
+function hideAlert() {
+    alertBox.style.display = "none";
+    emailInput.classList.remove("invalid-input");
+}
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideAlert();
+
+    const email = emailInput.value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+
+    if (!isAllowedEmailDomain(email)) {
+        emailInput.classList.add("invalid-input");
+        showAlert("Access restricted: Only valid Gmail (@gmail.com), Yahoo (@yahoo.com), or Microsoft (@outlook.com, @hotmail.com, @live.com) emails can log in.");
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Logging in...";
+
+    try {
+        const res = await fetch(`${BACKEND_URL}/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.message || "Invalid credentials. Please try again.");
+        }
+
+        showAlert("Login successful! Redirecting...", false);
+        
+        localStorage.setItem("userUid", data.uid || "");
+        localStorage.setItem("userEmail", email);
+
+        setTimeout(() => {
+            window.location.href = "home.html";
+        }, 800);
+
+    } catch (err) {
+        console.error("Login error:", err);
+        showAlert(err.message || "Unable to connect to backend server.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Login";
+    }
+});
+</script>
+
+</body>
+</html>

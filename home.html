@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SportFit - Stronger Everyday</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #031225;
+            color: white;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            height: 75px;
+            background: #020d1d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            border-bottom: 1px solid #17283d;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo span {
+            color: #1677ff;
+        }
+
+        .tagline {
+            font-size: 9px;
+            color: #aaa;
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .nav-links a:hover {
+            color: #1680ff;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .login {
+            background: transparent;
+            color: white;
+            border: 1px solid #aaa;
+            padding: 11px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .signup {
+            background: #126cff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 430px;
+            display: flex;
+            align-items: center;
+            padding: 50px 6%;
+            background:
+                linear-gradient(90deg, #031225 25%, rgba(3, 18, 37, .5)),
+                url("https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=1400&q=80");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            max-width: 550px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            line-height: 1;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 span {
+            color: #0969ff;
+        }
+
+        .hero h3 {
+            color: #8be51c;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #ddd;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .primary-btn {
+            background: #086cff;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+            padding: 14px 25px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        /* STATS */
+
+        .stats {
+            display: flex;
+            gap: 45px;
+            margin-top: 35px;
+        }
+
+        .stat h2 {
+            font-size: 22px;
+        }
+
+        .stat p {
+            font-size: 12px;
+            margin: 3px 0;
+            color: #bbb;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            width: 90%;
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        /* ================= CATEGORY ================= */
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .category {
+            min-height: 170px;
+            padding: 22px;
+            border: 1px solid #26384e;
+            border-radius: 10px;
+            background: #071a30;
+            transition: .3s;
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+            border-color: #1478ff;
+        }
+
+        .category-icon {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .category h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .category p {
+            font-size: 12px;
+            color: #bbb;
+            line-height: 1.5;
+        }
+
+        .category a {
+            display: inline-block;
+            margin-top: 15px;
+            color: #1982ff;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        /* ================= SECTION ================= */
+
+        section {
+            padding: 30px 0;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .section-title h2 {
+            font-size: 20px;
+        }
+
+        .section-title a {
+            color: #3190ff;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        /* ================= WORKOUTS ================= */
+
+        .workouts {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+        }
+
+        .workout {
+            background: #071a30;
+            border: 1px solid #26384e;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: .3s;
+        }
+
+        .workout:hover {
+            transform: translateY(-5px);
+            border-color: #1678ff;
+        }
+
+        .workout img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+        }
+
+        .workout-content {
+            padding: 12px;
+        }
+
+        .workout h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .details {
+            display: flex;
+            justify-content: space-between;
+            color: #aaa;
+            font-size: 11px;
+        }
+
+        .view-workout {
+            display: block;
+            color: #278bff;
+            margin-top: 15px;
+            font-size: 12px;
+        }
+
+        /* ================= SPORTS ================= */
+
+        .sports {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+        }
+
+        .sport {
+            text-align: center;
+        }
+
+        .sport img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #30445b;
+        }
+
+        .sport h3 {
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        /* ================= PROGRESS ================= */
+
+        .progress {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .progress-card {
+            background: #071a30;
+            border: 1px solid #26384e;
+            padding: 25px;
+            border-radius: 9px;
+            min-height: 170px;
+        }
+
+        .progress-card h3 {
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .progress-number {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .progress-card p {
+            color: #aaa;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .bar {
+            height: 8px;
+            background: #20334a;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .bar span {
+            display: block;
+            width: 80%;
+            height: 100%;
+            background: #72d916;
+        }
+
+        /* ================= MOTIVATION ================= */
+
+        .motivation {
+            margin: 20px 0 40px;
+            padding: 30px;
+            border: 1px solid #30445b;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #071a30;
+        }
+
+        .motivation h2 {
+            font-size: 22px;
+        }
+
+        .motivation span {
+            color: #7ee51b;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #020d1d;
+            border-top: 1px solid #17283d;
+            padding: 45px 6% 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 2fr;
+            gap: 40px;
+        }
+
+        footer h2 {
+            margin-bottom: 10px;
+        }
+
+        footer h2 span {
+            color: #1677ff;
+        }
+
+        footer p {
+            color: #aaa;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        footer h3 {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        footer a {
+            display: block;
+            color: #aaa;
+            text-decoration: none;
+            font-size: 12px;
+            margin: 8px 0;
+        }
+
+        footer a:hover {
+            color: #1680ff;
+        }
+
+        .newsletter input {
+            padding: 12px;
+            background: #071a30;
+            border: 1px solid #35475c;
+            color: white;
+            border-radius: 6px;
+            width: 65%;
+        }
+
+        .newsletter button {
+            padding: 12px 15px;
+            background: #116eff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid #17283d;
+            color: #777;
+            font-size: 11px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 900px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .workouts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sports {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .progress {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+        }
+
+        @media(max-width: 600px) {
+
+            nav {
+                padding: 0 20px;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+
+            .hero {
+                padding: 40px 20px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .stats {
+                gap: 15px;
+            }
+
+            .categories,
+            .workouts,
+            .progress {
+                grid-template-columns: 1fr;
+            }
+
+            .sports {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .motivation {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+            <a href="home.html" style="color:white; text-decoration:none;">🏃 SPORT<span>FIT</span></a>
+            <small class="tagline">STRONGER EVERYDAY</small>
+        </div>
+
+        <div class="nav-links">
+            <a href="about.html">About</a>
+            <a href="sports.html">Sports</a>
+            <a href="fitness.html">Fitness</a>
+            <a href="workouts.html">Workouts</a>
+            <a href="nutrition.html">Nutrition</a>
+            <a href="progress.html">Progress</a>
+        </div>
+
+        <div class="nav-buttons" id="navAuthArea">
+            <a href="login.html" class="login" style="text-decoration:none; display:inline-block;">Login</a>
+            <a href="register.html" class="signup" style="text-decoration:none; display:inline-block;">Register</a>
+        </div>
+
+    </nav>
+
+
+    <!-- ================= HERO ================= -->
+
+    <div class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                BUILD YOUR
+                <span>STRONGER</span> SELF
+            </h1>
+
+            <h3>Train. Track. Transform.</h3>
+
+            <p>
+                Your journey to a healthier, stronger and
+                better you starts here.
+            </p>
+
+            <div class="hero-buttons">
+                <!-- <button <a href="/workouts.html" class="primary-btn"> -->
+                    <!-- Start Your Journey → -->
+                <!-- </button> -->
+
+
+                <a href="about.html" class="primary-btn">
+                  Start Your Journey →
+                </a>
+
+                <a href="workouts.html" class="secondary-btn">
+                    Explore Workouts
+                </a>
+
+            </div>
+
+            <div class="stats">
+
+                <div class="stat">
+                    <h2>🔥 500+</h2>
+                    <p>Calories Burned</p>
+                </div>
+
+                <div class="stat">
+                    <h2>🏋️ 100+</h2>
+                    <p>Workouts</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <main class="container">
+
+        <!-- ================= CATEGORIES ================= -->
+
+        <section>
+
+            <div class="categories">
+
+                <div class="category">
+                    <div class="category-icon">🏃</div>
+                    <h2>Sports</h2>
+                    <p>Play your favorite sports and stay active.</p>
+                    <a href="sports.html">Explore Now →</a>
+                </div>
+
+                <div class="category">
+                    <div class="category-icon">💪</div>
+                    <h2>Fitness</h2>
+                    <p>Improve your strength, endurance and stamina.</p>
+                    <a href="fitness.html">Explore Now →</a>
+                </div>
+
+                <div class="category">
+                    <div class="category-icon">🏋️</div>
+                    <h2>Workouts</h2>
+                    <p>Get the best workouts for all fitness levels.</p>
+                    <a href="workouts.html">Explore Now →</a>
+                </div>
+
+                <div class="category">
+                    <div class="category-icon">🥗</div>
+                    <h2>Nutrition</h2>
+                    <p>Eat right, stay healthy and feel amazing.</p>
+                    <a href="nutrition.html">Explore Now →</a>
+                </div>
+
+                <div class="category">
+                    <div class="category-icon">🤝</div>
+                    <h2>PW Care</h2>
+                    <p>Help physically challenged and needy people through donations and community support.</p>
+                    <a href="PW Care.html">Support Now →</a>
+                </div>
+
+                <div class="category">
+                    <div class="category-icon">♿</div>
+                    <h2>Accessibility</h2>
+                    <p>Voice navigation, screen reader support and accessible fitness guidance.</p>
+                    <a href="Accessibility.html">Explore Now →</a>
+                </div>
+
+
+
+                <div class="category">
+                    <div class="category-icon">📷</div>
+                    <h2>AI Form Guard</h2>
+                    <p>Real-time posture detection, exercise counter and form correction using AI.</p>
+                    <a href="aiformguard.html">Try Now →</a>
+                </div>
+
+                <div class="category">
+                    <div class="category-icon">📷</div>
+                    <h2>Fatigue Detection</h2>
+                    <p>Rest Recommendation Popup</p>
+                    <a href="fatigue.html">Try Now →</a>
+                </div>
+
+                 <div class="category">
+                    <div class="category-icon">🎤</div>
+                    <h2>AR Campus Quests</h2>
+                    <p>Stay active, complete missions, and unlock achievements.</p>
+                    <a href="ar_campus.html">Try Now →</a>
+                </div>
+
+
+                <div class="category">
+                    <div class="category-icon">🎤</div>
+                    <h2>AI Voice Coach</h2>
+                    <p>Control the website using voice commands and get fitness guidance.</p>
+                    <a href="AI_voice_coach.html">Try Now →</a>
+                </div>
+
+                <div class="category">
+                    <div class="category-icon">❤️</div>
+                    <h2>Donate & Help</h2>
+                    <p>Donate money, sports kits, shoes and fitness equipment for people in need.</p>
+                    <a href="Donate.html">Donate Now →</a>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= WORKOUTS ================= -->
+
+        <section>
+
+            <div class="section-title">
+                <h2>POPULAR WORKOUTS</h2>
+                <a href="#">View All →</a>
+            </div>
+
+            <div class="workouts">
+
+                <div class="workout">
+                    <img src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?auto=format&fit=crop&w=600&q=80">
+                    <div class="workout-content">
+                        <h3>Full Body Workout</h3>
+                        <div class="details">
+                            <span>◷ 30 min</span>
+                            <span>▮ Medium</span>
+                        </div>
+                        <span class="view-workout">View Workout →</span>
+                    </div>
+                </div>
+
+                <div class="workout">
+                    <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=600&q=80">
+                    <div class="workout-content">
+                        <h3>Cardio Burn</h3>
+                        <div class="details">
+                            <span>◷ 25 min</span>
+                            <span>▮ Easy</span>
+                        </div>
+                        <span class="view-workout">View Workout →</span>
+                    </div>
+                </div>
+
+                <div class="workout">
+                    <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=600&q=80">
+                    <div class="workout-content">
+                        <h3>Strength Training</h3>
+                        <div class="details">
+                            <span>◷ 40 min</span>
+                            <span>▮ Hard</span>
+                        </div>
+                        <span class="view-workout">View Workout →</span>
+                    </div>
+                </div>
+
+                <div class="workout">
+                    <img src="https://images.unsplash.com/photo-1540206276207-3af25c08abc4?auto=format&fit=crop&w=600&q=80">
+                    <div class="workout-content">
+                        <h3>Yoga & Flexibility</h3>
+                        <div class="details">
+                            <span>◷ 30 min</span>
+                            <span>▮ Easy</span>
+                        </div>
+                        <span class="view-workout">View Workout →</span>
+                    </div>
+                </div>
+
+                <div class="workout">
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=600&q=80">
+                    <div class="workout-content">
+                        <h3>Home Workout</h3>
+                        <div class="details">
+                            <span>◷ 20 min</span>
+                            <span>▮ Easy</span>
+                        </div>
+                        <span class="view-workout">View Workout →</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SPORTS ================= -->
+
+        <section>
+
+            <div class="section-title">
+                <h2>TOP SPORTS</h2>
+                <a href="#">View All →</a>
+            </div>
+
+            <div class="sports">
+
+                <div class="sport">
+                    <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=500&q=80">
+                    <h3>Cricket</h3>
+                </div>
+
+                <div class="sport">
+                    <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=500&q=80">
+                    <h3>Football</h3>
+                </div>
+
+                <div class="sport">
+                    <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=500&q=80">
+                    <h3>Basketball</h3>
+                </div>
+
+                <div class="sport">
+                    <img src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=500&q=80">
+                    <h3>Badminton</h3>
+                </div>
+
+                <div class="sport">
+                    <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=500&q=80">
+                    <h3>Running</h3>
+                </div>
+
+                <div class="sport">
+                    <img src="https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=500&q=80">
+                    <h3>Tennis</h3>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PROGRESS ================= -->
+
+        <section>
+
+            <div class="section-title">
+                <h2>YOUR PROGRESS</h2>
+            </div>
+
+            <div class="progress">
+
+                <div class="progress-card">
+                    <h3>Weekly Progress</h3>
+                    <div class="progress-number">80%</div>
+                    <div class="bar">
+                        <span></span>
+                    </div>
+                    <p>Great Job! Keep it up.</p>
+                </div>
+
+                <div class="progress-card">
+                    <h3>Workouts Completed</h3>
+                    <div class="progress-number">12</div>
+                    <p>15 This Week</p>
+                    <div class="bar">
+                        <span style="width:70%"></span>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <h3>Calories Burned</h3>
+                    <div class="progress-number">2,450</div>
+                    <p>3,000 kcal goal</p>
+                    <div class="bar">
+                        <span style="width:82%"></span>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <h3>Goals Achieved</h3>
+                    <div class="progress-number">8 🏆</div>
+                    <p>10 This Week</p>
+                    <div class="bar">
+                        <span style="width:80%"></span>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= MOTIVATION ================= -->
+
+        <div class="motivation">
+
+            <h2>
+                YOUR ONLY COMPETITION
+                <span>IS WHO YOU WERE YESTERDAY.</span>
+            </h2>
+
+            <button class="primary-btn">
+                Start Training Now →
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <div>
+                <h2>🏃 SPORT<span>FIT</span></h2>
+
+                <p>
+                    We help you become the best version
+                    of yourself through sports, fitness,
+                    workouts and healthy lifestyle.
+                </p>
+            </div>
+
+
+            <div>
+                <h3>Quick Links</h3>
+
+                <a href="#">Home</a>
+                <a href="#">Sports</a>
+                <a href="#">Fitness</a>
+                <a href="#">Workouts</a>
+                <a href="#">Nutrition</a>
+                <a href="#">Progress</a>
+            </div>
+
+
+            <div>
+                <h3>Useful Links</h3>
+
+                <a href="#">About Us</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Blog</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">FAQ</a>
+            </div>
+
+
+            <div class="newsletter">
+
+                <h3>Subscribe to Newsletter</h3>
+
+                <p>
+                    Get latest updates on workouts,
+                    fitness tips and more.
+                </p>
+
+                <br>
+
+                <input type="email" placeholder="Enter your email">
+
+                <button>Subscribe</button>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 SportFit. All Rights Reserved.
+        </div>
+
+    </footer>
+
+    <script>
+        const userEmail = localStorage.getItem("userEmail");
+        const navAuthArea = document.getElementById("navAuthArea");
+
+        if (userEmail && navAuthArea) {
+            const shortName = userEmail.split('@')[0];
+            navAuthArea.innerHTML = `
+                <span style="color:#52a8ff; font-size:13px; font-weight:600; display:flex; align-items:center; gap:6px;">
+                    👤 ${shortName}
+                </span>
+                <button onclick="handleLogout()" class="login" style="padding:7px 16px; font-size:13px; cursor:pointer;">Logout</button>
+            `;
+        }
+
+        async function handleLogout() {
+            await fetch("http://localhost:5000/logout", {
+                method: "POST",
+                credentials: "include"
+            });
+            localStorage.removeItem("userUid");
+            localStorage.removeItem("userEmail");
+            window.location.reload();
+        }
+    </script>
+
+</body>
+
+</html>

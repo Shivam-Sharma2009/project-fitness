@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Voice Coach</title>
+
+<style>
+body{
+    background:#031225;
+    color:white;
+    font-family:Arial,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    background:#071a30;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    width:500px;
+    border:1px solid #234;
+}
+
+h1{
+    color:#0d6efd;
+    margin-bottom:15px;
+}
+
+p{
+    color:#ddd;
+    margin-bottom:20px;
+}
+
+button{
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    margin:10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#0056d6;
+}
+
+#status{
+    margin-top:20px;
+    color:#29ff78;
+    font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="container" style="position:relative;">
+
+<a href="home.html" style="color:#52a8ff; text-decoration:none; font-size:13px; display:inline-block; margin-bottom:15px;">← Back to Dashboard</a>
+
+<h1>🎤 AI Voice Coach</h1>
+
+<p>Your personal fitness voice assistant.</p>
+
+<button onclick="startCoach()">
+Start Coaching
+</button>
+
+<button onclick="motivateMe()">
+Motivate Me
+</button>
+
+<button onclick="stopCoach()">
+Stop Voice
+</button>
+
+<div id="status">
+Coach Ready
+</div>
+
+</div>
+
+<script>
+
+let speech;
+
+function speak(text){
+
+speech = new SpeechSynthesisUtterance(text);
+
+speech.rate = 1;
+speech.pitch = 1;
+speech.volume = 1;
+
+speechSynthesis.speak(speech);
+}
+
+function startCoach(){
+
+document.getElementById("status").innerHTML =
+"🏋️ Workout Coaching Started";
+
+speak(
+"Welcome to SportFit. Start with a warm up. Keep your posture straight and breathe properly during exercise."
+);
+
+}
+
+function motivateMe(){
+
+const messages = [
+
+"You are stronger than you think.",
+
+"Every workout makes you better.",
+
+"Stay focused and keep moving.",
+
+"Success starts with consistency.",
+
+"Believe in yourself and keep going."
+
+];
+
+let random =
+messages[Math.floor(Math.random()*messages.length)];
+
+document.getElementById("status").innerHTML =
+"🔥 Motivation Activated";
+
+speak(random);
+
+}
+
+function stopCoach(){
+
+speechSynthesis.cancel();
+
+document.getElementById("status").innerHTML =
+"🔇 Voice Coach Stopped";
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progress Tracker</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    background:#031225;
+    color:white;
+    text-align:center;
+    margin:0;
+}
+
+.container{
+    width:80%;
+    max-width:600px;
+    margin:40px auto;
+    background:#071a30;
+    padding:30px;
+    border-radius:12px;
+}
+
+h1{
+    color:#0d6efd;
+}
+
+input{
+    width:90%;
+    padding:12px;
+    margin:10px 0;
+    border:none;
+    border-radius:6px;
+}
+
+button{
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0056d2;
+}
+
+.result{
+    margin-top:20px;
+    padding:20px;
+    background:#02101f;
+    border-radius:10px;
+}
+
+.back{
+    display:inline-block;
+    margin-top:20px;
+    color:white;
+    text-decoration:none;
+    background:#0d6efd;
+    padding:10px 20px;
+    border-radius:6px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📊 Daily Progress Tracker</h1>
+
+<input type="text" id="name" placeholder="Enter Your Name">
+
+<input type="number" id="workout" placeholder="Workout Minutes">
+
+<input type="number" id="water" placeholder="Water Intake (Litres)">
+
+<input type="number" id="calories" placeholder="Calories Burned">
+
+<br>
+
+<button onclick="showProgress()">
+Save Progress
+</button>
+
+<div id="result" class="result"></div>
+
+<a href="home.html" class="back">
+← Back Home
+</a>
+
+</div>
+
+<script>
+
+function showProgress(){
+
+let name=document.getElementById("name").value;
+let workout=document.getElementById("workout").value;
+let water=document.getElementById("water").value;
+let calories=document.getElementById("calories").value;
+
+document.getElementById("result").innerHTML=`
+
+<h2>🎉 Today's Progress</h2>
+
+<p><b>Name:</b> ${name}</p>
+
+<p><b>Workout:</b> ${workout} Minutes</p>
+
+<p><b>Water Intake:</b> ${water} Litres</p>
+
+<p><b>Calories Burned:</b> ${calories}</p>
+
+<p style="color:#29ff78;">
+Keep Going! You're doing great 💪
+</p>
+
+`;
+
+}
+
+</script>
+
+</body>
+</html>
+</body>
+</html>

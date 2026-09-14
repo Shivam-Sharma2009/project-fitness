@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitQuest Accessibility AI Assistant</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#031225;
+color:white;
+padding:30px;
+padding-bottom:140px; /* room for the fixed caption bar */
+transition:0.3s;
+}
+
+.container{
+max-width:820px;
+margin:auto;
+background:#071a30;
+padding:30px;
+border-radius:15px;
+text-align:center;
+}
+
+h1{
+color:#0d6efd;
+margin-bottom:6px;
+}
+
+.subtitle{
+color:#8fb4e8;
+margin-bottom:16px;
+font-size:15px;
+}
+
+.pitchBanner{
+background:#0d6efd22;
+border:1px solid #0d6efd;
+border-radius:10px;
+padding:12px 16px;
+font-size:14px;
+color:#cfe1ff;
+margin-bottom:20px;
+text-align:left;
+line-height:1.6;
+}
+
+p{
+line-height:1.8;
+margin-bottom:20px;
+}
+
+button{
+background:#0d6efd;
+color:white;
+border:none;
+padding:12px 20px;
+margin:6px;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#0056d6;
+}
+
+button.listening{
+background:#29ff78;
+color:#031225;
+}
+
+button.toggled{
+background:#ffb020;
+color:#031225;
+}
+
+.status{
+margin-top:20px;
+font-size:18px;
+color:#29ff78;
+font-weight:bold;
+min-height:26px;
+}
+
+.card{
+background:#0a2038;
+border:1px solid #123258;
+border-radius:12px;
+padding:20px;
+margin-top:20px;
+text-align:left;
+}
+
+.card h2{
+color:#0d6efd;
+font-size:18px;
+margin-bottom:12px;
+text-align:center;
+}
+
+.commandList{
+text-align:left;
+list-style:none;
+line-height:2;
+}
+
+.commandList li::before{
+content:"🗣️ ";
+}
+
+#log{
+text-align:left;
+max-height:220px;
+overflow-y:auto;
+background:#031225;
+border-radius:8px;
+padding:12px;
+font-size:14px;
+line-height:1.6;
+}
+
+#log .you{ color:#7fd1ff; }
+#log .assistant{ color:#29ff78; }
+#log .denied{ color:#ff5c5c; }
+
+#leaderboard{
+list-style:none;
+}
+#leaderboard li{
+display:flex;
+justify-content:space-between;
+padding:6px 0;
+border-bottom:1px solid #123258;
+}
+
+#loginBadge{
+display:inline-block;
+margin-top:10px;
+padding:6px 14px;
+border-radius:20px;
+background:#123258;
+font-size:14px;
+}
+
+.dnaGrid{
+display:flex;
+justify-content:space-around;
+flex-wrap:wrap;
+gap:12px;
+margin-bottom:14px;
+}
+.dnaStat{
+background:#031225;
+border-radius:10px;
+padding:12px 18px;
+text-align:center;
+min-width:100px;
+}
+.dnaStat .label{
+font-size:12px;
+color:#8fb4e8;
+}
+.dnaStat .value{
+font-size:18px;
+font-weight:bold;
+color:#29ff78;
+}
+
+.workoutVisual{
+display:flex;
+align-items:center;
+gap:16px;
+background:#031225;
+border-radius:10px;
+padding:16px;
+margin-top:10px;
+}
+.workoutVisual .icon{
+font-size:48px;
+}
+.workoutVisual .text{
+font-size:16px;
+line-height:1.5;
+}
+.progressDots{
+display:flex;
+gap:8px;
+margin-top:10px;
+justify-content:center;
+}
+.progressDots span{
+width:12px;
+height:12px;
+border-radius:50%;
+background:#123258;
+display:inline-block;
+}
+.progressDots span.done{
+background:#29ff78;
+}
+.progressDots span.current{
+background:#0d6efd;
+}
+
+/* Live caption bar for hearing-impaired users */
+#captionBar{
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.92);
+color:#ffd166;
+font-size:26px;
+font-weight:bold;
+text-align:center;
+padding:18px 20px;
+min-height:70px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-top:3px solid #0d6efd;
+z-index:999;
+}
+#captionBar.hidden{ display:none; }
+#captionBar .who{
+color:#7fd1ff;
+font-size:14px;
+font-weight:normal;
+margin-right:10px;
+}
+
+/* High Contrast Mode */
+.highContrast{
+background:black !important;
+color:yellow !important;
+}
+.highContrast .container, .highContrast .card, .highContrast .workoutVisual, .highContrast .dnaStat{
+background:#000 !important;
+border-color:yellow !important;
+}
+.highContrast button{
+background:#000 !important;
+color:yellow !important;
+border:2px solid yellow !important;
+}
+.highContrast #captionBar{
+background:#000 !important;
+color:yellow !important;
+border-top-color:yellow !important;
+}
+
+/* Large Text Mode */
+.largeText, .largeText p, .largeText li, .largeText button, .largeText .status, .largeText .workoutVisual .text{
+font-size:24px !important;
+}
+.largeText #captionBar{
+font-size:32px !important;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>♿ FitQuest Accessibility Assistant</h1>
+<p class="subtitle">Voice-first fitness guidance for visually impaired, hearing-impaired and mobility-challenged users.</p>
+
+<div class="pitchBanner">
+"FitQuest AI includes an accessibility-first voice assistant that enables visually impaired, hearing-impaired, and mobility-impaired users to access personalized fitness guidance without barriers." Try saying <strong>"Hey FitQuest, start today's workout."</strong>
+</div>
+
+<p id="content">
+Welcome to FitQuest. This assistant can log you in, guide an adaptive workout,
+read your leaderboard position, check your Fitness DNA, and enter you into
+challenges — all by voice. Say "help" any time to hear what you can say.
+</p>
+
+<button onclick="speakIntro()">🔊 Read Welcome Message</button>
+<button id="assistantBtn" onclick="toggleAssistant()">🎙️ Start Assistant</button>
+<button onclick="toggleContrast()">🌙 High Contrast</button>
+<button onclick="toggleTextSize()">🔠 Large Text</button>
+<button id="captionToggleBtn" onclick="toggleCaptions()">💬 Captions: ON</button>
+<button id="seatedToggleBtn" onclick="toggleSeatedPreference()">🦽 Seated Exercises: OFF</button>
+
+<div class="status" id="status">Assistant Ready</div>
+<div id="loginBadge">Not logged in</div>
+
+<div class="card">
+<h2>What you can say</h2>
+<ul class="commandList">
+<li>"Hey FitQuest, login" — voice login</li>
+<li>"Start today's workout" — adaptive voice workout guidance (asks seated or standing)</li>
+<li>"Read leaderboard" — voice leaderboard</li>
+<li>"Join challenge" — voice challenge participation</li>
+<li>"Check my Fitness DNA" — personalized recommendation</li>
+<li>"Go home" / "Open fitness" / "Open nutrition" — voice navigation</li>
+<li>"About" — hear the project pitch</li>
+<li>"Help" — hear this list again</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>🧬 Fitness DNA</h2>
+<div class="dnaGrid">
+<div class="dnaStat"><div class="label">Stamina</div><div class="value" id="dnaStamina">Excellent</div></div>
+<div class="dnaStat"><div class="label">Strength</div><div class="value" id="dnaStrength">Good</div></div>
+<div class="dnaStat"><div class="label">Flexibility</div><div class="value" id="dnaFlex">Average</div></div>
+</div>
+<button onclick="checkFitnessDNA()">🧬 Check My Fitness DNA</button>
+</div>
+
+<div class="card" id="workoutCard" style="display:none;">
+<h2>Today's Workout — <span id="workoutModeLabel">Standing</span></h2>
+<div class="workoutVisual">
+<div class="icon" id="workoutIcon">🏃</div>
+<div class="text" id="workoutText">—</div>
+</div>
+<div class="progressDots" id="workoutDots"></div>
+</div>
+
+<div class="card">
+<h2>Leaderboard</h2>
+<ul id="leaderboard">
+<li><span>1. Aisha</span><span>1,240 pts</span></li>
+<li><span>2. Ravi</span><span>1,180 pts</span></li>
+<li><span>3. Priya</span><span>1,065 pts</span></li>
+<li><span>4. Aman</span><span>980 pts</span></li>
+</ul>
+</div>
+
+<div class="card">
+<h2>Conversation Log (voice-to-text)</h2>
+<div id="log"><div class="assistant">Assistant: Say "help" to hear what I can do.</div></div>
+</div>
+
+</div>
+
+<div id="captionBar"><span class="who" id="captionWho"></span><span id="captionText">Captions will appear here when the assistant speaks.</span></div>
+
+<script>
+
+// ---------------- State ----------------
+
+let assistantActive = false;
+let recognition = null;
+let recognitionRunning = false;
+let assistantState = "idle"; // idle | awaiting_name | awaiting_workout_type | in_workout | awaiting_challenge_confirm
+let loggedInUser = null;
+let workoutIndex = 0;
+let seatedPreference = false;
+let captionsEnabled = true;
+let captionHideTimer = null;
+let currentWorkoutSteps = [];
+
+const registeredUsers = ["ravi","priya","aisha","aman"];
+
+const standingWorkout = [
+    { icon:"🤸", text:"Step 1: 10 jumping jacks. Say next when you are ready to continue." },
+    { icon:"🧘", text:"Step 2: 15 second plank hold. Say next when you are ready to continue." },
+    { icon:"🏋️", text:"Step 3: 10 bodyweight squats. Say next when you are ready to continue." },
+    { icon:"💪", text:"Step 4: 10 push-ups. Say next when you are ready to continue." },
+    { icon:"😌", text:"Step 5: 30 second rest. Say next to finish the workout." }
+];
+
+const seatedWorkout = [
+    { icon:"🙆", text:"Step 1: 10 seated arm circles. Say next when you are ready to continue." },
+    { icon:"🦵", text:"Step 2: 10 seated leg lifts, each leg. Say next when you are ready to continue." },
+    { icon:"🏃", text:"Step 3: Seated marching in place, 20 steps. Say next when you are ready to continue." },
+    { icon:"💪", text:"Step 4: 10 seated shoulder presses using light weights or water bottles. Say next when you are ready to continue." },
+    { icon:"🧘", text:"Step 5: 30 second seated deep breathing rest. Say next to finish the workout." }
+];
+
+const fitnessDNA = { stamina: "excellent", strength: "good", flexibility: "average" };
+
+// ---------------- Captions (for hearing-impaired users) ----------------
+
+function showCaption(who, text){
+    if(!captionsEnabled) return;
+    const bar = document.getElementById("captionBar");
+    document.getElementById("captionWho").innerText = who ? who + ":" : "";
+    document.getElementById("captionText").innerText = text;
+    bar.classList.remove("hidden");
+    if(captionHideTimer) clearTimeout(captionHideTimer);
+    captionHideTimer = setTimeout(() => {
+        document.getElementById("captionText").innerText = "Captions will appear here when the assistant speaks.";
+        document.getElementById("captionWho").innerText = "";
+    }, 8000);
+}
+
+function toggleCaptions(){
+    captionsEnabled = !captionsEnabled;
+    const btn = document.getElementById("captionToggleBtn");
+    btn.innerText = "💬 Captions: " + (captionsEnabled ? "ON" : "OFF");
+    document.getElementById("captionBar").classList.toggle("hidden", !captionsEnabled);
+}
+
+// ---------------- Logging + Speech ----------------
+
+function logMessage(who, text){
+    const log = document.getElementById("log");
+    const line = document.createElement("div");
+    line.className = who; // "you", "assistant", or "denied"
+    const prefix = who === "you" ? "You said: " : (who === "denied" ? "Assistant (denied): " : "Assistant: ");
+    line.innerText = prefix + text;
+    log.appendChild(line);
+    log.scrollTop = log.scrollHeight;
+}
+
+function speak(text, statusClass){
+    document.getElementById("status").innerText = text;
+    if(statusClass) document.getElementById("status").style.color = statusClass;
+    const who = statusClass === "#ff5c5c" ? "denied" : "assistant";
+    logMessage(who, text);
+    showCaption("Assistant", text);
+
+    // pause listening while the assistant talks, so it doesn't hear itself
+    if(recognitionRunning && recognition){
+        recognition.onend = null; // avoid auto-restart firing mid-speech
+        recognition.stop();
+        recognitionRunning = false;
+    }
+
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "en-US";
+    utter.onend = () => {
+        if(assistantActive) startListening();
+    };
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utter);
+}
+
+function speakIntro(){
+    const text = document.getElementById("content").innerText;
+    speak(text, "#29ff78");
+}
+
+// ---------------- Assistant toggle ----------------
+
+function toggleAssistant(){
+    if(!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)){
+        alert("Voice Recognition Not Supported in this browser. Try Chrome.");
+        return;
+    }
+    assistantActive = !assistantActive;
+    const btn = document.getElementById("assistantBtn");
+    if(assistantActive){
+        btn.innerText = "⏹ Stop Assistant";
+        btn.classList.add("listening");
+        speak("Assistant started. Say help to hear what you can do.", "#29ff78");
+    } else {
+        btn.innerText = "🎙️ Start Assistant";
+        btn.classList.remove("listening");
+        if(recognition) recognition.stop();
+        recognitionRunning = false;
+        document.getElementById("status").innerText = "Assistant Stopped";
+        document.getElementById("status").style.color = "#8fb4e8";
+    }
+}
+
+function startListening(){
+    if(!assistantActive) return;
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognitionAPI();
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+        recognitionRunning = true;
+        document.getElementById("status").innerText = "🎤 Listening...";
+        document.getElementById("status").style.color = "#29ff78";
+    };
+
+    recognition.onresult = (event) => {
+        let command = event.results[0][0].transcript.toLowerCase().trim();
+        logMessage("you", command);
+        showCaption("You", command);
+        // strip the optional wake phrase, e.g. "Hey FitQuest, start today's workout"
+        command = command.replace(/^(hey |ok |okay )?fitquest[, ]*/i, "").trim();
+        handleCommand(command);
+    };
+
+    recognition.onerror = (event) => {
+        recognitionRunning = false;
+        if(event.error === "no-speech" || event.error === "aborted"){
+            if(assistantActive) startListening();
+        } else if(event.error === "not-allowed"){
+            assistantActive = false;
+            document.getElementById("assistantBtn").innerText = "🎙️ Start Assistant";
+            document.getElementById("assistantBtn").classList.remove("listening");
+            speak("Microphone access was denied. Please allow microphone access and start the assistant again.", "#ff5c5c");
+        } else if(assistantActive){
+            startListening();
+        }
+    };
+
+    recognition.onend = () => {
+        recognitionRunning = false;
+        if(assistantActive) startListening();
+    };
+
+    try{
+        recognition.start();
+    }catch(e){
+        // recognition may already be starting; ignore duplicate start errors
+    }
+}
+
+// ---------------- Fitness DNA ----------------
+
+function checkFitnessDNA(){
+    document.getElementById("dnaStamina").innerText = fitnessDNA.stamina.charAt(0).toUpperCase() + fitnessDNA.stamina.slice(1);
+    document.getElementById("dnaStrength").innerText = fitnessDNA.strength.charAt(0).toUpperCase() + fitnessDNA.strength.slice(1);
+    document.getElementById("dnaFlex").innerText = fitnessDNA.flexibility.charAt(0).toUpperCase() + fitnessDNA.flexibility.slice(1);
+
+    let recommendation;
+    if(fitnessDNA.stamina === "excellent"){
+        recommendation = "Your stamina is excellent. I recommend a 15-minute endurance challenge today.";
+    } else if(fitnessDNA.stamina === "good"){
+        recommendation = "Your stamina is good. I recommend a 10-minute steady cardio session today.";
+    } else {
+        recommendation = "Your stamina is still building. I recommend a gentle 5-minute warm-up today, and we can build up from there.";
+    }
+    speak(recommendation, "#29ff78");
+}
+
+// ---------------- Adaptive Workout ----------------
+
+function toggleSeatedPreference(){
+    seatedPreference = !seatedPreference;
+    const btn = document.getElementById("seatedToggleBtn");
+    btn.innerText = "🦽 Seated Exercises: " + (seatedPreference ? "ON" : "OFF");
+    btn.classList.toggle("toggled", seatedPreference);
+}
+
+function renderWorkoutDots(){
+    const dots = document.getElementById("workoutDots");
+    dots.innerHTML = "";
+    currentWorkoutSteps.forEach((step, i) => {
+        const dot = document.createElement("span");
+        if(i < workoutIndex) dot.className = "done";
+        else if(i === workoutIndex) dot.className = "current";
+        dots.appendChild(dot);
+    });
+}
+
+function showWorkoutStep(){
+    const step = currentWorkoutSteps[workoutIndex];
+    document.getElementById("workoutCard").style.display = "block";
+    document.getElementById("workoutIcon").innerText = step.icon;
+    document.getElementById("workoutText").innerText = step.text;
+    document.getElementById("workoutModeLabel").innerText = seatedPreference ? "Seated" : "Standing";
+    renderWorkoutDots();
+}
+
+function beginWorkout(){
+    currentWorkoutSteps = seatedPreference ? seatedWorkout : standingWorkout;
+    workoutIndex = 0;
+    showWorkoutStep();
+    speak("Starting your " + (seatedPreference ? "seated" : "standing") + " workout. " + currentWorkoutSteps[0].text, "#29ff78");
+    assistantState = "in_workout";
+}
+
+// ---------------- Conversation logic ----------------
+
+// This is the OFFLINE fallback: simple keyword matching, used only if the
+// natural-language AI call below fails (e.g. no internet). It keeps the
+// assistant working even when the smarter conversation layer is unreachable.
+function handleCommandFallback(command){
+
+    // global commands, work in every state
+    if(command.includes("help")){
+        speak("You can say: login, start today's workout, read leaderboard, join challenge, check my fitness DNA, go home, open fitness, open nutrition, or about.", "#29ff78");
+        return;
+    }
+
+    if(command.includes("about") || command.includes("pitch")){
+        speak("FitQuest AI includes an accessibility-first voice assistant that enables visually impaired, hearing-impaired, and mobility-impaired users to access personalized fitness guidance without barriers.", "#29ff78");
+        return;
+    }
+
+    if(assistantState === "awaiting_name"){
+        const name = registeredUsers.find(u => command.includes(u));
+        if(name){
+            loggedInUser = name.charAt(0).toUpperCase() + name.slice(1);
+            document.getElementById("loginBadge").innerText = "Logged in as " + loggedInUser;
+            speak("Welcome back, " + loggedInUser + "! You are now logged in.", "#29ff78");
+        } else {
+            speak("Sorry, I don't recognize that name. Login denied. Say login to try again.", "#ff5c5c");
+        }
+        assistantState = "idle";
+        return;
+    }
+
+    if(assistantState === "awaiting_workout_type"){
+        if(command.includes("seated") || command.includes("sitting") || command.includes("wheelchair")){
+            seatedPreference = true;
+            document.getElementById("seatedToggleBtn").innerText = "🦽 Seated Exercises: ON";
+            document.getElementById("seatedToggleBtn").classList.add("toggled");
+            beginWorkout();
+        } else if(command.includes("standing") || command.includes("stand")){
+            seatedPreference = false;
+            document.getElementById("seatedToggleBtn").innerText = "🦽 Seated Exercises: OFF";
+            document.getElementById("seatedToggleBtn").classList.remove("toggled");
+            beginWorkout();
+        } else {
+            speak("Sorry, please say seated exercises or standing exercises.", "#ff5c5c");
+        }
+        return;
+    }
+
+    if(assistantState === "in_workout"){
+        if(command.includes("stop workout")){
+            speak("Workout stopped. Say start today's workout any time to resume from the beginning.", "#29ff78");
+            document.getElementById("workoutCard").style.display = "none";
+            assistantState = "idle";
+            return;
+        }
+        if(command.includes("next")){
+            workoutIndex++;
+            if(workoutIndex >= currentWorkoutSteps.length){
+                speak("Workout complete! Great job, " + (loggedInUser || "athlete") + ".", "#29ff78");
+                assistantState = "idle";
+            } else {
+                showWorkoutStep();
+                speak(currentWorkoutSteps[workoutIndex].text, "#29ff78");
+            }
+            return;
+        }
+        speak("I didn't understand that. Say next to continue the workout, or stop workout to end it.", "#ff5c5c");
+        return;
+    }
+
+    if(assistantState === "awaiting_challenge_confirm"){
+        if(command.includes("yes")){
+            speak("You have successfully joined the Weekly Step Challenge. Good luck, " + (loggedInUser || "athlete") + "!", "#29ff78");
+            assistantState = "idle";
+        } else if(command.includes("no")){
+            speak("Okay, you were not entered into the challenge.", "#29ff78");
+            assistantState = "idle";
+        } else {
+            speak("Please say yes or no. Would you like to join the Weekly Step Challenge?", "#ff5c5c");
+        }
+        return;
+    }
+
+    // ---- idle state: main command router ----
+
+    if(command.includes("login")){
+        speak("Please say your registered name to log in.", "#29ff78");
+        assistantState = "awaiting_name";
+        return;
+    }
+
+    if(command.includes("leaderboard")){
+        speak("Current leaderboard: 1st place, Aisha, 1,240 points. 2nd place, Ravi, 1,180 points. 3rd place, Priya, 1,065 points. 4th place, Aman, 980 points.", "#29ff78");
+        return;
+    }
+
+    if(command.includes("workout")){
+        if(seatedPreference){
+            // preference already set via the toggle button — skip asking
+            beginWorkout();
+        } else {
+            speak("Would you like seated exercises or standing exercises today?", "#29ff78");
+            assistantState = "awaiting_workout_type";
+        }
+        return;
+    }
+
+    if(command.includes("fitness dna") || command.includes("my dna") || command.includes("recommend")){
+        checkFitnessDNA();
+        return;
+    }
+
+    if(command.includes("challenge")){
+        speak("Would you like to join the Weekly Step Challenge? Say yes or no.", "#29ff78");
+        assistantState = "awaiting_challenge_confirm";
+        return;
+    }
+
+    if(command.includes("home") || command.includes("fitness") || command.includes("nutrition")){
+        let page = command.includes("home") ? "home" : (command.includes("fitness") ? "fitness" : "nutrition");
+        speak("Opening the " + page + " page now.", "#29ff78");
+        // Navigation is simulated here since this is a standalone demo page.
+        // In the full app, this would run: window.location.href = page + ".html";
+        return;
+    }
+
+    // fallback: command not understood — the assistant explicitly refuses
+    speak("Sorry, I didn't understand that command. Say help to hear what you can say.", "#ff5c5c");
+}
+
+// ---------------- Natural conversation layer (Claude-powered) ----------------
+// This is what makes the assistant "talk properly": instead of rigid keyword
+// matching, every utterance is sent to an AI model along with the current
+// app state, so it can understand varied phrasing, chat naturally, and still
+// hand back a clean, safe intent for the app to act on. If this call fails
+// for any reason (no internet, blocked, etc.) we silently fall back to the
+// simpler keyword matcher above so the assistant never goes silent.
+
+let conversationHistory = [];
+const AI_BACKEND_URL = "http://localhost:5000";
+
+const ALLOWED_INTENTS = [
+    "login","provide_name","start_workout","choose_seated","choose_standing",
+    "next_step","stop_workout","confirm_yes","confirm_no","read_leaderboard",
+    "join_challenge","check_dna","navigate_home","navigate_fitness","navigate_nutrition",
+    "about","help","chitchat","unknown"
+];
+
+async function classifyIntent(userText){
+    const stateContext = {
+        assistantState,
+        loggedInUser,
+        seatedPreference,
+        workoutIndex,
+        workoutLength: currentWorkoutSteps.length
+    };
+
+    const systemPrompt =
+"You are the natural-language understanding layer for FitQuest, a warm, encouraging, conversational fitness accessibility voice assistant for visually impaired, hearing-impaired, and mobility-challenged users.\n\n" +
+"Current app state (JSON): " + JSON.stringify(stateContext) + "\n\n" +
+"Classify the user's latest message into exactly ONE intent from this list: " + ALLOWED_INTENTS.join(", ") + ".\n\n" +
+"Rules:\n" +
+"- If assistantState is 'awaiting_name', classify almost anything as 'provide_name' and put the spoken first name (lowercase) in entities.name.\n" +
+"- If assistantState is 'awaiting_workout_type', map seated/sitting/wheelchair phrases to 'choose_seated' and standing/stand-up phrases to 'choose_standing'.\n" +
+"- If assistantState is 'in_workout', map 'next'/'continue'/'done'/'ready' style phrases to 'next_step', and 'stop'/'end'/'quit' style phrases to 'stop_workout'.\n" +
+"- If assistantState is 'awaiting_challenge_confirm', map affirmative replies to 'confirm_yes' and negative replies to 'confirm_no'.\n" +
+"- Use 'chitchat' for greetings, thanks, small talk, or casual questions.\n" +
+"- Use 'unknown' only if the message truly does not fit anything above and is not chitchat.\n" +
+"- For 'chitchat', 'help', 'about', and 'unknown' intents only, write a short, warm, natural one or two sentence spoken reply in the 'reply' field. For every other intent, set 'reply' to an empty string — the app supplies its own confirmation wording for those.\n\n" +
+"Respond with ONLY valid JSON, no markdown formatting, no extra text, in exactly this shape:\n" +
+'{"intent": "one_of_the_list_above", "entities": {}, "reply": "..."}';
+
+    const response = await fetch(`${AI_BACKEND_URL}/ai/classify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            system: systemPrompt,
+            messages: [...conversationHistory, { role: "user", content: userText }]
+        })
+    });
+
+    if(!response.ok) throw new Error("API error " + response.status);
+
+    const data = await response.json();
+    const rawText = (data.content || []).map(b => b.text || "").join("");
+    const clean = rawText.replace(/```json|```/g, "").trim();
+    const parsed = JSON.parse(clean);
+
+    if(!ALLOWED_INTENTS.includes(parsed.intent)) parsed.intent = "unknown";
+    parsed.entities = parsed.entities || {};
+
+    conversationHistory.push({ role: "user", content: userText });
+    conversationHistory.push({ role: "assistant", content: clean });
+    if(conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
+
+    return parsed;
+}
+
+async function handleCommand(rawCommand){
+    document.getElementById("status").innerText = "🤔 Thinking...";
+    document.getElementById("status").style.color = "#8fb4e8";
+
+    let parsed;
+    try{
+        parsed = await classifyIntent(rawCommand);
+    }catch(e){
+        console.error("AI understanding unavailable, using offline matching:", e);
+        handleCommandFallback(rawCommand);
+        return;
+    }
+
+    const entities = parsed.entities;
+
+    switch(parsed.intent){
+
+        case "login":
+            speak("Please say your registered name to log in.", "#29ff78");
+            assistantState = "awaiting_name";
+            break;
+
+        case "provide_name": {
+            const spokenName = (entities.name || rawCommand).toLowerCase();
+            const name = registeredUsers.find(u => spokenName.includes(u));
+            if(name){
+                loggedInUser = name.charAt(0).toUpperCase() + name.slice(1);
+                document.getElementById("loginBadge").innerText = "Logged in as " + loggedInUser;
+                speak("Welcome back, " + loggedInUser + "! You are now logged in.", "#29ff78");
+            } else {
+                speak("Sorry, I don't recognize that name. Login denied. Say login to try again.", "#ff5c5c");
+            }
+            assistantState = "idle";
+            break;
+        }
+
+        case "choose_seated":
+            seatedPreference = true;
+            document.getElementById("seatedToggleBtn").innerText = "🦽 Seated Exercises: ON";
+            document.getElementById("seatedToggleBtn").classList.add("toggled");
+            beginWorkout();
+            break;
+
+        case "choose_standing":
+            seatedPreference = false;
+            document.getElementById("seatedToggleBtn").innerText = "🦽 Seated Exercises: OFF";
+            document.getElementById("seatedToggleBtn").classList.remove("toggled");
+            beginWorkout();
+            break;
+
+        case "start_workout":
+            if(seatedPreference){
+                beginWorkout();
+            } else {
+                speak("Would you like seated exercises or standing exercises today?", "#29ff78");
+                assistantState = "awaiting_workout_type";
+            }
+            break;
+
+        case "next_step":
+            if(assistantState !== "in_workout"){
+                speak("There's no workout in progress right now. Say start today's workout to begin.", "#ff5c5c");
+                break;
+            }
+            workoutIndex++;
+            if(workoutIndex >= currentWorkoutSteps.length){
+                speak("Workout complete! Great job, " + (loggedInUser || "athlete") + ".", "#29ff78");
+                assistantState = "idle";
+            } else {
+                showWorkoutStep();
+                speak(currentWorkoutSteps[workoutIndex].text, "#29ff78");
+            }
+            break;
+
+        case "stop_workout":
+            speak("Workout stopped. Say start today's workout any time to resume from the beginning.", "#29ff78");
+            document.getElementById("workoutCard").style.display = "none";
+            assistantState = "idle";
+            break;
+
+        case "confirm_yes":
+            if(assistantState === "awaiting_challenge_confirm"){
+                speak("You have successfully joined the Weekly Step Challenge. Good luck, " + (loggedInUser || "athlete") + "!", "#29ff78");
+                assistantState = "idle";
+            } else {
+                speak(parsed.reply || "Great!", "#29ff78");
+            }
+            break;
+
+        case "confirm_no":
+            if(assistantState === "awaiting_challenge_confirm"){
+                speak("Okay, you were not entered into the challenge.", "#29ff78");
+                assistantState = "idle";
+            } else {
+                speak(parsed.reply || "No problem.", "#29ff78");
+            }
+            break;
+
+        case "read_leaderboard":
+            speak("Current leaderboard: 1st place, Aisha, 1,240 points. 2nd place, Ravi, 1,180 points. 3rd place, Priya, 1,065 points. 4th place, Aman, 980 points.", "#29ff78");
+            break;
+
+        case "join_challenge":
+            speak("Would you like to join the Weekly Step Challenge? Say yes or no.", "#29ff78");
+            assistantState = "awaiting_challenge_confirm";
+            break;
+
+        case "check_dna":
+            checkFitnessDNA();
+            break;
+
+        case "navigate_home":
+        case "navigate_fitness":
+        case "navigate_nutrition": {
+            const page = parsed.intent === "navigate_home" ? "home" : (parsed.intent === "navigate_fitness" ? "fitness" : "nutrition");
+            speak("Opening the " + page + " page now.", "#29ff78");
+            break;
+        }
+
+        case "about":
+            speak("FitQuest AI includes an accessibility-first voice assistant that enables visually impaired, hearing-impaired, and mobility-impaired users to access personalized fitness guidance without barriers.", "#29ff78");
+            break;
+
+        case "help":
+            speak("You can say: login, start today's workout, read leaderboard, join challenge, check my fitness DNA, go home, open fitness, open nutrition, or about. You can also just talk to me naturally.", "#29ff78");
+            break;
+
+        case "chitchat":
+            speak(parsed.reply || "I'm doing well, thanks for asking! How can I help with your fitness today?", "#29ff78");
+            break;
+
+        case "unknown":
+        default:
+            speak(parsed.reply || "Sorry, I didn't quite catch that. Say help to hear what you can say.", "#ff5c5c");
+            break;
+    }
+}
+
+// ---------------- Display toggles ----------------
+
+function toggleContrast(){
+    document.body.classList.toggle("highContrast");
+}
+
+function toggleTextSize(){
+    document.body.classList.toggle("largeText");
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fatigue Detection</title>
+
+<style>
+
+body{
+    font-family:Arial, sans-serif;
+    background:#0b1220;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    width:500px;
+    background:#16213e;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+h1{
+    color:#00bfff;
+}
+
+.progress-container{
+    width:100%;
+    height:30px;
+    background:#2c3e50;
+    border-radius:20px;
+    overflow:hidden;
+    margin:20px 0;
+}
+
+.progress-bar{
+    width:20%;
+    height:100%;
+    background:limegreen;
+    transition:0.5s;
+}
+
+#fatigueValue{
+    font-size:24px;
+    font-weight:bold;
+}
+
+button{
+    padding:12px 25px;
+    background:#00bfff;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+#status{
+    margin-top:15px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="home.html" style="color:#00bfff; text-decoration:none; font-size:13px; display:inline-block; margin-bottom:15px;">← Back to Dashboard</a>
+
+<h1>😴 Fatigue Detection</h1>
+
+<p>Monitor your fatigue level during workout</p>
+
+<div class="progress-container">
+    <div class="progress-bar" id="fatigueBar"></div>
+</div>
+
+<div id="fatigueValue">20%</div>
+
+<button onclick="increaseFatigue()">
+Start Workout
+</button>
+
+<div id="status">
+💪 Energy Level Good
+</div>
+
+</div>
+
+<script>
+
+let fatigue = 20;
+
+function increaseFatigue(){
+
+    fatigue += 20;
+
+    if(fatigue > 100){
+        fatigue = 100;
+    }
+
+    document.getElementById("fatigueBar").style.width =
+    fatigue + "%";
+
+    document.getElementById("fatigueValue").innerHTML =
+    fatigue + "%";
+
+    if(fatigue < 50){
+
+        document.getElementById("fatigueBar").style.background =
+        "limegreen";
+
+        document.getElementById("status").innerHTML =
+        "💪 Energy Level Good";
+
+    }
+
+    else if(fatigue < 80){
+
+        document.getElementById("fatigueBar").style.background =
+        "orange";
+
+        document.getElementById("status").innerHTML =
+        "⚠ Drink Water & Take Short Break";
+
+    }
+
+    else{
+
+        document.getElementById("fatigueBar").style.background =
+        "red";
+
+        document.getElementById("status").innerHTML =
+        "🚨 Rest Recommended";
+
+        alert("You are tired! Please take some rest.");
+
+        let voice =
+        new SpeechSynthesisUtterance(
+        "Warning. You are tired. Please take some rest."
+        );
+
+        speechSynthesis.speak(voice);
+    }
+}
+
+</script>
+
+</body>
+</html>

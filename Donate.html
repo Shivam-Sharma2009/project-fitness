@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SportFit - Donate & Community Support</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter', sans-serif;
+}
+body{
+    background:#031225;
+    color:white;
+    min-height:100vh;
+}
+nav{
+    height:70px;
+    background:#020d1d;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    border-bottom:1px solid #17283d;
+}
+.logo{
+    font-family:'Outfit', sans-serif;
+    font-size:22px;
+    font-weight:800;
+    color:white;
+    text-decoration:none;
+}
+.logo span{ color:#1677ff; }
+.nav-links a{
+    color:#9ab3cf;
+    text-decoration:none;
+    font-size:14px;
+    margin-left:24px;
+    transition:color 0.2s;
+}
+.nav-links a:hover{ color:white; }
+
+.hero{
+    text-align:center;
+    padding:60px 20px 30px;
+    max-width:800px;
+    margin:auto;
+}
+.hero h1{
+    font-family:'Outfit', sans-serif;
+    font-size:42px;
+    font-weight:800;
+    margin-bottom:15px;
+    background:linear-gradient(135deg, #ffffff 40%, #5ca5ff 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+.hero p{
+    color:#8fa7c4;
+    font-size:16px;
+    line-height:1.6;
+}
+
+.donation-grid{
+    max-width:1000px;
+    margin:30px auto;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:30px;
+}
+@media(max-width: 768px){
+    .donation-grid{ grid-template-columns: 1fr; }
+}
+
+.card{
+    background:#071a30;
+    border:1px solid #1c3d63;
+    border-radius:16px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+.card h2{
+    font-family:'Outfit', sans-serif;
+    font-size:22px;
+    margin-bottom:20px;
+    color:#52a8ff;
+}
+
+.amount-chips{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:10px;
+    margin-bottom:20px;
+}
+.amount-chip{
+    background:#031225;
+    border:1px solid #1c3d63;
+    padding:12px;
+    border-radius:8px;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    text-align:center;
+    transition:all 0.2s;
+}
+.amount-chip:hover, .amount-chip.active{
+    background:#1677ff;
+    border-color:#1677ff;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+label{
+    display:block;
+    color:#8fa7c4;
+    font-size:13px;
+    margin-bottom:6px;
+}
+input, select, textarea{
+    width:100%;
+    padding:12px 14px;
+    background:#031225;
+    border:1px solid #1c3d63;
+    border-radius:8px;
+    color:white;
+    font-size:14px;
+    outline:none;
+}
+input:focus, select:focus, textarea:focus{
+    border-color:#1677ff;
+}
+
+.btn-primary{
+    width:100%;
+    padding:14px;
+    background:#1677ff;
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    transition:background 0.2s;
+    margin-top:10px;
+}
+.btn-primary:hover{
+    background:#0f5ecc;
+}
+
+.alert{
+    padding:12px;
+    border-radius:8px;
+    font-size:14px;
+    margin-bottom:15px;
+    display:none;
+    background:rgba(82, 196, 26, 0.15);
+    border:1px solid #52c41a;
+    color:#73d13d;
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="home.html" class="logo">🏃 SPORT<span>FIT</span></a>
+    <div class="nav-links">
+        <a href="home.html">Home</a>
+        <a href="workouts.html">Workouts</a>
+        <a href="PW Care.html">PW Care</a>
+        <a href="Accessibility.html">Accessibility</a>
+    </div>
+</nav>
+
+<div class="hero">
+    <h1>Empower Athletes Everywhere</h1>
+    <p>Your support provides sports kits, adaptive gear, and coaching to underserved youth and athletes with disabilities.</p>
+</div>
+
+<div class="donation-grid">
+    <!-- Financial Support -->
+    <div class="card">
+        <h2>💖 Make a Financial Contribution</h2>
+        <div id="financialAlert" class="alert">Thank you for your generous pledge! Our team will contact you with payment details.</div>
+        <form id="financialForm">
+            <label>Select Donation Tier</label>
+            <div class="amount-chips">
+                <div class="amount-chip" onclick="selectTier(this, 500)">₹500</div>
+                <div class="amount-chip active" onclick="selectTier(this, 1000)">₹1,000</div>
+                <div class="amount-chip" onclick="selectTier(this, 2500)">₹2,500</div>
+            </div>
+
+            <div class="form-group">
+                <label for="fName">Full Name</label>
+                <input type="text" id="fName" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <label for="fEmail">Email Address</label>
+                <input type="email" id="fEmail" placeholder="your.email@gmail.com" required>
+            </div>
+            <div class="form-group">
+                <label for="customAmount">Custom Amount (₹)</label>
+                <input type="number" id="customAmount" value="1000" min="100">
+            </div>
+            <button type="submit" class="btn-primary">Pledge Donation</button>
+        </form>
+    </div>
+
+    <!-- Equipment Donation -->
+    <div class="card">
+        <h2>🏏 Donate Gear & Equipment</h2>
+        <div id="gearAlert" class="alert">Donation request received! We will arrange pickup or drop-off with you shortly.</div>
+        <form id="gearForm">
+            <div class="form-group">
+                <label for="gName">Full Name / Organization</label>
+                <input type="text" id="gName" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+                <label for="gPhone">Phone Number</label>
+                <input type="tel" id="gPhone" placeholder="10-digit phone" required>
+            </div>
+            <div class="form-group">
+                <label for="gType">Item Category</label>
+                <select id="gType" required>
+                    <option value="Cricket / Football / Basketball Kit">Cricket / Football / Basketball Kit</option>
+                    <option value="Running Shoes / Athletic Wear">Running Shoes / Athletic Wear</option>
+                    <option value="Adaptive / Mobility Support Gear">Adaptive / Mobility Support Gear</option>
+                    <option value="Gym & Weights Equipment">Gym & Weights Equipment</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="gDesc">Details & Condition</label>
+                <textarea id="gDesc" rows="3" placeholder="Describe items, sizes, and condition..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Submit Equipment Donation</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function selectTier(el, amount) {
+    document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('customAmount').value = amount;
+}
+
+document.getElementById('financialForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    document.getElementById('financialAlert').style.display = 'block';
+    e.target.reset();
+});
+
+document.getElementById('gearForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    document.getElementById('gearAlert').style.display = 'block';
+    e.target.reset();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AR Campus Quests</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#031225;
+color:white;
+padding:20px;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+}
+
+h1{
+text-align:center;
+color:#0d6efd;
+margin-bottom:20px;
+}
+
+.card{
+background:#071a30;
+padding:20px;
+margin:20px 0;
+border-radius:12px;
+border:1px solid #234;
+}
+
+.card h2{
+color:#29ff78;
+margin-bottom:10px;
+}
+
+button{
+background:#0d6efd;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#0056d6;
+}
+
+.progress{
+width:100%;
+height:25px;
+background:#1a2a40;
+border-radius:20px;
+overflow:hidden;
+margin-top:15px;
+}
+
+.bar{
+height:100%;
+width:0%;
+background:#29ff78;
+transition:.5s;
+}
+
+.reward{
+font-size:22px;
+color:gold;
+margin-top:10px;
+}
+
+.badge{
+display:inline-block;
+padding:10px 15px;
+background:#29ff78;
+color:black;
+border-radius:20px;
+margin:5px;
+font-weight:bold;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>🎮 AR Campus Quests</h1>
+
+<div class="card">
+<h2>📋 Daily Missions</h2>
+
+<p>1. Walk 1000 Steps</p>
+<p>2. Drink 8 Glasses Water</p>
+<p>3. Complete Workout</p>
+
+<button onclick="completeMission()">
+Complete Mission
+</button>
+
+</div>
+
+<div class="card">
+<h2>📍 Location Challenge</h2>
+
+<p id="locationText">
+Click below to discover challenge location
+</p>
+
+<button onclick="generateLocation()">
+Find Challenge
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>⭐ XP Progress</h2>
+
+<h3 id="xpText">
+XP : 0 / 100
+</h3>
+
+<div class="progress">
+<div class="bar" id="xpBar"></div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🏆 Rewards</h2>
+
+<div id="rewardArea">
+No Rewards Yet
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🎖 Achievements</h2>
+
+<div id="badges">
+No Badges Earned
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let xp=0;
+
+function completeMission(){
+
+xp += 25;
+
+if(xp > 100){
+xp = 100;
+}
+
+document.getElementById("xpText")
+.innerHTML = "XP : " + xp + " / 100";
+
+document.getElementById("xpBar")
+.style.width = xp + "%";
+
+if(xp >= 50){
+
+document.getElementById("rewardArea")
+.innerHTML =
+"<div class='reward'>🎁 Free Fitness Badge Unlocked</div>";
+
+}
+
+if(xp >= 100){
+
+document.getElementById("badges")
+.innerHTML =
+"<span class='badge'>Explorer</span>" +
+"<span class='badge'>Fitness Hero</span>";
+
+alert("🏆 Level Completed!");
+}
+
+}
+
+function generateLocation(){
+
+let locations = [
+
+"🏃 Sports Ground Challenge",
+"🏫 Library Walk Quest",
+"🌳 Campus Garden Challenge",
+"🚶 Hostel To Canteen Walk",
+"🏀 Basketball Court Quest"
+
+];
+
+let randomLocation =
+locations[
+Math.floor(
+Math.random()*locations.length
+)
+];
+
+document.getElementById("locationText")
+.innerHTML = randomLocation;
+
+}
+
+</script>
+
+</body>
+</html>

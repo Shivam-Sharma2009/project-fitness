@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutriton</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nutrition Guide</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#031225;
+color:white;
+}
+
+header{
+background:#02101f;
+padding:25px;
+text-align:center;
+}
+
+header h1{
+color:#0d6efd;
+}
+
+.hero{
+padding:60px 20px;
+text-align:center;
+background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+url("https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1400&q=80");
+background-size:cover;
+background-position:center;
+}
+
+.hero h2{
+font-size:45px;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:18px;
+color:#ddd;
+}
+
+.container{
+width:90%;
+margin:auto;
+padding:50px 0;
+}
+
+.section-title{
+text-align:center;
+margin-bottom:30px;
+color:#29ff78;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+.card{
+background:#071a30;
+padding:25px;
+border-radius:12px;
+border:1px solid #234;
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+border-color:#0d6efd;
+}
+
+.card h3{
+color:#29ff78;
+margin-bottom:10px;
+}
+
+.card p{
+line-height:1.6;
+color:#ddd;
+}
+
+.meal-plan{
+margin-top:40px;
+background:#071a30;
+padding:25px;
+border-radius:12px;
+}
+
+.meal-plan h2{
+color:#29ff78;
+margin-bottom:15px;
+}
+
+.meal-plan p{
+margin:10px 0;
+}
+
+.tip{
+margin-top:40px;
+background:#071a30;
+padding:25px;
+border-radius:12px;
+}
+
+.tip h2{
+color:#29ff78;
+margin-bottom:15px;
+}
+
+.tip p{
+margin:8px 0;
+}
+
+.quote{
+margin-top:30px;
+text-align:center;
+font-size:24px;
+color:#0d6efd;
+font-weight:bold;
+}
+
+.back{
+display:inline-block;
+margin-top:30px;
+background:#0d6efd;
+padding:12px 20px;
+border-radius:8px;
+text-decoration:none;
+color:white;
+}
+
+footer{
+text-align:center;
+padding:20px;
+margin-top:40px;
+border-top:1px solid #234;
+}
+
+
+input,select{
+padding:10px;
+margin:8px;
+border:none;
+border-radius:6px;
+width:220px;
+}
+
+button{
+background:#0d6efd;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+margin:5px;
+}
+
+button:hover{
+background:#0056d6;
+}
+
+#mealList{
+margin-top:15px;
+padding-left:20px;
+}
+
+#mealList li{
+margin:8px 0;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🥗 NUTRITION GUIDE</h1>
+</header>
+
+<section class="hero">
+<h2>Eat Healthy, Live Better</h2>
+<p>
+Good nutrition is the foundation of a healthy and active lifestyle.
+</p>
+</section>
+
+<div class="container">
+
+<h2 class="section-title">
+Essential Nutrients
+</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>🍗 Protein</h3>
+<p>
+Protein helps build and repair muscles.
+Sources: Eggs, Chicken, Fish, Paneer, Milk, Soybean.
+</p>
+</div>
+
+<div class="card">
+<h3>🍚 Carbohydrates</h3>
+<p>
+Carbs provide energy for daily activities.
+Sources: Rice, Bread, Oats, Potato, Fruits.
+</p>
+</div>
+
+<div class="card">
+<h3>🥑 Healthy Fats</h3>
+<p>
+Healthy fats support brain and heart health.
+Sources: Nuts, Seeds, Avocado, Olive Oil.
+</p>
+</div>
+
+<div class="card">
+<h3>🥦 Vitamins & Minerals</h3>
+<p>
+Boost immunity and support body functions.
+Sources: Fruits, Vegetables and Dairy Products.
+</p>
+</div>
+
+</div>
+
+<div class="meal-plan">
+
+<h2>🍽 Sample Daily Meal Plan</h2>
+
+<p><b>Breakfast:</b> Oats + Milk + Banana</p>
+
+<p><b>Lunch:</b> Rice + Dal + Vegetables + Salad</p>
+
+<p><b>Evening Snack:</b> Fruits + Nuts</p>
+
+<p><b>Dinner:</b> Roti + Paneer/Chicken + Vegetables</p>
+
+</div>
+
+<div class="tip">
+
+<h2>💡 Nutrition Tips</h2>
+
+<p>✅ Drink 2-3 litres of water daily.</p>
+
+<p>✅ Eat fresh fruits and vegetables.</p>
+
+<p>✅ Avoid excessive junk food.</p>
+
+<p>✅ Include protein in every meal.</p>
+
+<p>✅ Do not skip breakfast.</p>
+
+<p>✅ Limit sugary drinks and snacks.</p>
+
+</div>
+
+<div class="quote">
+"Take care of your body. It’s the only place you have to live."
+</div>
+
+<div class="meal-plan">
+
+<h2>💧 Nutrition Tracker</h2>
+
+<!-- Water Tracker -->
+<h3>Water Tracker</h3>
+<p>Glasses Drank Today:</p>
+
+<h2 id="waterCount">0</h2>
+
+<button onclick="addWater()">
++ Add Water
+</button>
+
+<hr style="margin:20px 0;">
+
+<!-- Calories Counter -->
+<h3>🔥 Calories Counter</h3>
+
+<input type="number"
+id="caloriesInput"
+placeholder="Enter Calories">
+
+<button onclick="addCalories()">
+Add Calories
+</button>
+
+<h2 id="totalCalories">
+0 kcal
+</h2>
+
+<hr style="margin:20px 0;">
+
+<!-- Meal Planner -->
+<h3>🍽 Meal Planner</h3>
+
+<input type="text"
+id="mealName"
+placeholder="Enter Meal Name">
+
+<select id="mealTime">
+<option>Breakfast</option>
+<option>Lunch</option>
+<option>Dinner</option>
+<option>Snack</option>
+</select>
+
+<button onclick="addMeal()">
+Add Meal
+</button>
+
+<ul id="mealList"></ul>
+
+</div>
+
+
+
+<center>
+<a href="home.html" class="back">
+← Back To Home
+</a>
+</center>
+
+</div>
+
+<footer>
+© 2026 SportFit | Nutrition Guide
+</footer>
+
+
+
+
+<script>
+
+let water=0;
+
+function addWater(){
+
+water++;
+
+document.getElementById("waterCount")
+.innerHTML=water;
+
+}
+
+let totalCalories=0;
+
+function addCalories(){
+
+let calories=
+Number(
+document.getElementById("caloriesInput").value
+);
+
+if(calories<=0){
+
+alert("Enter valid calories");
+
+return;
+
+}
+
+totalCalories+=calories;
+
+document.getElementById("totalCalories")
+.innerHTML=totalCalories+" kcal";
+
+document.getElementById("caloriesInput").value="";
+
+}
+
+function addMeal(){
+
+let meal=
+document.getElementById("mealName").value;
+
+let time=
+document.getElementById("mealTime").value;
+
+if(meal==""){
+
+alert("Enter Meal Name");
+
+return;
+
+}
+
+let li=document.createElement("li");
+
+li.innerHTML=
+"🍴 "+time+" : "+meal;
+
+document.getElementById("mealList")
+.appendChild(li);
+
+document.getElementById("mealName").value="";
+
+}
+
+</script>
+
+</body>
+</html>
+</body>
+</html>
