@@ -5,3 +5,10 @@ backend/node_modules/
 .firebase/
 .vercel
 .env*
+**/.env
+**/.env.*
+!**/.env.example
+**/serviceAccountKey.json
+**/*service-account*.json
+**/*credentials*.json
+**/*secret*.json

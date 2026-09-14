@@ -49,6 +49,7 @@ app.use(express.json());
 
 const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
 const anthropicModel = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6";
+const firebaseWebApiKey = process.env.FIREBASE_WEB_API_KEY;
 const isProduction = process.env.NODE_ENV === "production";
 
 const loginRateLimit = rateLimit({
@@ -213,6 +214,12 @@ app.post("/login", loginRateLimit, loginAccountRateLimit, async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        if (!firebaseWebApiKey) {
+            return res.status(503).json({
+                message: "Login is temporarily unavailable."
+            });
+        }
+
         if (!email || !isAllowedEmailDomain(email)) {
             return res.status(400).json({
                 message: "Access restricted: Only valid Gmail (@gmail.com), Yahoo (@yahoo.com), or Microsoft (@outlook.com, @hotmail.com, @live.com) emails can log in."
@@ -220,7 +227,7 @@ app.post("/login", loginRateLimit, loginAccountRateLimit, async (req, res) => {
         }
 
         const response = await fetch(
-            `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.FIREBASE_WEB_API_KEY}`,
+            `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${firebaseWebApiKey}`,
             {
                 method: "POST",
                 headers: {
