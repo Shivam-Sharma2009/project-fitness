@@ -186,6 +186,41 @@ padding-left:20px;
 margin:8px 0;
 }
 
+.water-controls{
+display:flex;
+flex-wrap:wrap;
+align-items:center;
+gap:8px;
+margin:12px 0;
+}
+
+.water-controls input,
+.water-controls select{
+margin:0;
+width:auto;
+min-width:110px;
+}
+
+.water-progress{
+height:10px;
+background:#031225;
+border-radius:999px;
+overflow:hidden;
+margin:12px 0 6px;
+}
+
+#waterProgressBar{
+height:100%;
+width:0;
+background:#29ff78;
+transition:width .25s ease;
+}
+
+.water-note{
+color:#aaa;
+font-size:14px;
+}
+
 </style>
 </head>
 
@@ -286,13 +321,23 @@ Sources: Fruits, Vegetables and Dairy Products.
 
 <!-- Water Tracker -->
 <h3>Water Tracker</h3>
-<p>Glasses Drank Today:</p>
+<p>Track your daily water intake and choose your preferred unit.</p>
 
-<h2 id="waterCount">0</h2>
+<div class="water-controls">
+<input type="number" id="waterAmount" min="1" value="250" aria-label="Water amount">
+<select id="waterUnit" aria-label="Water unit">
+<option value="ml">ml</option>
+<option value="oz">fl oz</option>
+</select>
+<button onclick="addWater()">+ Add Water</button>
+<button onclick="resetWater()">Reset</button>
+</div>
 
-<button onclick="addWater()">
-+ Add Water
-</button>
+<h2 id="waterCount">0 ml</h2>
+<div class="water-progress" aria-hidden="true">
+<div id="waterProgressBar"></div>
+</div>
+<p class="water-note" id="waterGoal">Daily goal: 2,000 ml</p>
 
 <hr style="margin:20px 0;">
 
@@ -354,15 +399,42 @@ Add Meal
 
 <script>
 
-let water=0;
+const WATER_GOAL_ML = 2000;
+let waterMl = Number(localStorage.getItem("sportfitWaterMl")) || 0;
+const waterUnit = document.getElementById("waterUnit");
+
+function formatWater(amountMl){
+const amount = waterUnit.value === "oz" ? amountMl / 29.5735 : amountMl;
+return `${Math.round(amount)} ${waterUnit.value === "oz" ? "fl oz" : "ml"}`;
+}
+
+function updateWaterDisplay(){
+document.getElementById("waterCount").innerHTML=formatWater(waterMl);
+document.getElementById("waterProgressBar").style.width=
+Math.min((waterMl / WATER_GOAL_ML) * 100, 100)+"%";
+document.getElementById("waterGoal").innerHTML=
+`Daily goal: ${waterUnit.value === "oz" ? Math.round(WATER_GOAL_ML / 29.5735) + " fl oz" : "2,000 ml"}`;
+}
 
 function addWater(){
+const amount=Number(document.getElementById("waterAmount").value);
+if(amount<=0){
+alert("Enter a valid water amount");
+return;
+}
+waterMl+=waterUnit.value === "oz" ? amount * 29.5735 : amount;
+localStorage.setItem("sportfitWaterMl", waterMl);
+updateWaterDisplay();
+}
 
-water++;
+function resetWater(){
+waterMl=0;
+localStorage.removeItem("sportfitWaterMl");
+updateWaterDisplay();
 
-document.getElementById("waterCount")
-.innerHTML=water;
 
+waterUnit.addEventListener("change", updateWaterDisplay);
+updateWaterDisplay();
 }
 
 let totalCalories=0;
