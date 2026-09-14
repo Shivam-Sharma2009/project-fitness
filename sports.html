@@ -164,10 +164,31 @@ header h1{
 }
 
 .session-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
     padding:12px;
     border-left:3px solid #29ff78;
     background:#031225;
     color:#dce8f5;
+}
+
+.remove-session{
+    flex:none;
+    padding:4px 9px;
+    border:1px solid #ff5c5c;
+    border-radius:5px;
+    background:transparent;
+    color:#ff8a8a;
+    cursor:pointer;
+    font-size:16px;
+    line-height:1;
+}
+
+.remove-session:hover{
+    background:#ff5c5c;
+    color:white;
 }
 
 .back{
@@ -312,10 +333,22 @@ function renderSessions(){
         return;
     }
 
-    savedSessions.forEach((session) => {
+    savedSessions.forEach((session, index) => {
         const item = document.createElement("div");
         item.className = "session-item";
-        item.textContent = `${session.sport} · ${session.skill} · ${session.duration} minutes · ${session.date}`;
+        const details = document.createElement("span");
+        details.textContent = `${session.sport} · ${session.skill} · ${session.duration} minutes · ${session.date}`;
+        const removeButton = document.createElement("button");
+        removeButton.className = "remove-session";
+        removeButton.type = "button";
+        removeButton.setAttribute("aria-label", `Remove ${session.sport} practice plan`);
+        removeButton.textContent = "×";
+        removeButton.addEventListener("click", () => {
+            savedSessions.splice(index, 1);
+            localStorage.setItem("sportfitSessions", JSON.stringify(savedSessions));
+            renderSessions();
+        });
+        item.append(details, removeButton);
         sessionList.appendChild(item);
     });
 }
