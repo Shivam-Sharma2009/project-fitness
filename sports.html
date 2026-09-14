@@ -100,6 +100,76 @@ header h1{
     color:#0d6efd;
 }
 
+.planner{
+    margin-top:40px;
+    background:#071a30;
+    padding:25px;
+    border-radius:10px;
+    border:1px solid #234;
+}
+
+.planner h2{
+    color:#29ff78;
+    margin-bottom:8px;
+}
+
+.planner-intro{
+    color:#ccc;
+    margin-bottom:18px;
+}
+
+.planner-form{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+    align-items:end;
+}
+
+.planner-form label{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    color:#dce8f5;
+    font-size:14px;
+}
+
+.planner-form input,
+.planner-form select{
+    width:100%;
+    padding:11px;
+    border:1px solid #234;
+    border-radius:6px;
+    background:#031225;
+    color:white;
+}
+
+.planner-form button{
+    padding:11px;
+    border:0;
+    border-radius:6px;
+    background:#0d6efd;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.planner-form button:hover{
+    background:#0056d6;
+}
+
+#sessionList{
+    display:grid;
+    gap:8px;
+    margin-top:18px;
+}
+
+.session-item{
+    padding:12px;
+    border-left:3px solid #29ff78;
+    background:#031225;
+    color:#dce8f5;
+}
+
 .back{
     display:inline-block;
     margin-top:30px;
@@ -167,6 +237,40 @@ footer{
 
     </div>
 
+    <section class="planner">
+        <h2>📝 Game Practice Planner</h2>
+        <p class="planner-intro">Create a practice session for cricket, football, basketball, badminton, tennis or athletics.</p>
+
+        <form id="sessionForm" class="planner-form">
+            <label>
+                Sport
+                <select id="sportName" required>
+                    <option value="">Choose a sport</option>
+                    <option>Cricket</option>
+                    <option>Football</option>
+                    <option>Basketball</option>
+                    <option>Badminton</option>
+                    <option>Tennis</option>
+                    <option>Athletics</option>
+                </select>
+            </label>
+            <label>
+                Skill focus
+                <input id="skillFocus" type="text" placeholder="e.g. Passing" required>
+            </label>
+            <label>
+                Duration (minutes)
+                <input id="sessionDuration" type="number" min="5" max="300" placeholder="45" required>
+            </label>
+            <label>
+                Practice date
+                <input id="sessionDate" type="date" required>
+            </label>
+            <button type="submit">Save Practice Plan</button>
+        </form>
+        <div id="sessionList" aria-live="polite"></div>
+    </section>
+
     <div class="tip">
         <h2>💡 Sports Tips of the Day</h2>
 
@@ -192,6 +296,45 @@ footer{
 <footer>
     © 2026 SportFit | Sports Hub
 </footer>
+
+<script>
+const sessionForm = document.getElementById("sessionForm");
+const sessionList = document.getElementById("sessionList");
+const savedSessions = JSON.parse(localStorage.getItem("sportfitSessions") || "[]");
+
+function renderSessions(){
+    sessionList.replaceChildren();
+    if (!savedSessions.length) {
+        const emptyState = document.createElement("p");
+        emptyState.className = "planner-intro";
+        emptyState.textContent = "No practice plans saved yet.";
+        sessionList.appendChild(emptyState);
+        return;
+    }
+
+    savedSessions.forEach((session) => {
+        const item = document.createElement("div");
+        item.className = "session-item";
+        item.textContent = `${session.sport} · ${session.skill} · ${session.duration} minutes · ${session.date}`;
+        sessionList.appendChild(item);
+    });
+}
+
+sessionForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    savedSessions.unshift({
+        sport: document.getElementById("sportName").value,
+        skill: document.getElementById("skillFocus").value.trim(),
+        duration: document.getElementById("sessionDuration").value,
+        date: document.getElementById("sessionDate").value
+    });
+    localStorage.setItem("sportfitSessions", JSON.stringify(savedSessions.slice(0, 10)));
+    sessionForm.reset();
+    renderSessions();
+});
+
+renderSessions();
+</script>
 
 </body>
 </html>
