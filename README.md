@@ -1,1 +1,1 @@
-https://project-fitness-tau.vercel.app/
+https://fitcampus-c6dd1.web.app/
