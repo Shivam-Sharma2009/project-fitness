@@ -238,10 +238,10 @@ required>
 <input
 type="password"
 id="password"
-placeholder="Minimum 6 Characters"
-minlength="6"
+placeholder="Minimum 8 Characters"
+minlength="8"
 required>
-<div class="field-hint">Use at least 6 characters and include a special character, such as @ or !</div>
+<div class="field-hint">Use at least 8 characters and include a special character, such as @ or !</div>
 </div>
 
 <div class="input-box">
@@ -250,7 +250,7 @@ required>
 type="password"
 id="confirmPassword"
 placeholder="Re-enter Password"
-minlength="6"
+minlength="8"
 required>
 </div>
 
@@ -360,8 +360,8 @@ form.addEventListener("submit", async (e) => {
         return;
     }
 
-    if (password.length < 6 || !/[^A-Za-z0-9]/.test(password)) {
-        showAlert("Password must be at least 6 characters and include a special character, such as @ or !.");
+    if (password.length < 8 || !/[^A-Za-z0-9]/.test(password)) {
+        showAlert("Password must be at least 8 characters and include a special character, such as @ or !.");
         return;
     }
 
