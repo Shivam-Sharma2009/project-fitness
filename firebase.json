@@ -8,15 +8,6 @@
       "backend/serviceAccountKey.json",
       "backend/.env"
     ],
-    "cleanUrls": true,
-    "rewrites": [
-      {
-        "source": "/api/**",
-        "function": "api"
-      }
-    ]
-  },
-  "functions": {
-    "source": "backend"
+    "cleanUrls": true
   }
 }
