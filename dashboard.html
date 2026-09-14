@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SportFit personal fitness dashboard">
+    <title>SportFit Dashboard</title>
+    <style>
+        :root {
+            --bg: #031225;
+            --panel: #071a30;
+            --panel-light: #0b2340;
+            --line: #1c3d63;
+            --text: #f6f9ff;
+            --muted: #8fa7c4;
+            --blue: #126cff;
+            --green: #8be51c;
+            --orange: #ffb347;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+        }
+        a { color: inherit; text-decoration: none; }
+        button { font: inherit; }
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            padding: 10px 16px;
+            background: var(--blue);
+            color: white;
+            z-index: 3;
+        }
+        .skip-link:focus { left: 0; }
+        nav {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 0 6%;
+            background: #020d1d;
+            border-bottom: 1px solid #17283d;
+        }
+        .brand { font-size: 24px; font-weight: 700; }
+        .brand span { color: var(--blue); }
+        .nav-links { display: flex; gap: 22px; color: #d6e3f5; font-size: 14px; }
+        .nav-links a:hover, .nav-links a:focus { color: #65a7ff; }
+        .logout {
+            padding: 9px 16px;
+            border: 1px solid #50739e;
+            border-radius: 7px;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+        }
+        main { width: min(1180px, 88%); margin: 0 auto; padding: 42px 0 64px; }
+        .welcome {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        .eyebrow { color: var(--green); font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+        h1 { margin: 7px 0; font-size: clamp(30px, 5vw, 48px); }
+        .welcome p { margin: 0; color: var(--muted); }
+        .date { color: var(--muted); font-size: 14px; }
+        .profile-card { margin-bottom: 18px; }
+        .profile-heading { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+        .profile-heading p { margin: -10px 0 18px; color: var(--muted); font-size: 13px; }
+        .profile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
+        .profile-field label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 12px; }
+        .profile-field input, .profile-field select {
+            width: 100%;
+            padding: 10px 11px;
+            border: 1px solid #2a4e78;
+            border-radius: 7px;
+            background: #04172b;
+            color: var(--text);
+            font: inherit;
+        }
+        .profile-field input:focus, .profile-field select:focus { outline: 2px solid #4b9aff; outline-offset: 1px; }
+        .profile-actions { display: flex; align-items: center; gap: 14px; margin-top: 16px; }
+        .profile-message { color: var(--green); font-size: 13px; }
+        .profile-message.warning { color: var(--orange); }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .card {
+            padding: 22px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 13px;
+        }
+        .metric-label { color: var(--muted); font-size: 13px; }
+        .metric-value { margin: 10px 0 4px; font-size: 30px; font-weight: 700; }
+        .metric-note { color: var(--green); font-size: 12px; }
+        .content-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 18px; margin-top: 18px; }
+        .card h2 { margin: 0 0 18px; font-size: 20px; }
+        .workout {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 17px 0;
+            border-top: 1px solid #153454;
+        }
+        .workout:first-of-type { border-top: 0; padding-top: 0; }
+        .workout h3 { margin: 0 0 5px; font-size: 16px; }
+        .workout p { margin: 0; color: var(--muted); font-size: 13px; }
+        .tag { color: var(--orange); font-size: 12px; }
+        .primary {
+            display: inline-block;
+            padding: 12px 17px;
+            border: 0;
+            border-radius: 7px;
+            background: var(--blue);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .primary:hover, .primary:focus, .logout:hover, .logout:focus { opacity: .88; }
+        .progress-row { margin: 19px 0; }
+        .progress-head { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; }
+        .progress-head span:last-child { color: var(--muted); }
+        .bar { height: 9px; overflow: hidden; border-radius: 9px; background: #102b4a; }
+        .bar span { display: block; height: 100%; border-radius: inherit; background: var(--blue); }
+        .bar.green span { background: var(--green); }
+        .bar.orange span { background: var(--orange); }
+        .quick-links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 11px; }
+        .quick-link {
+            padding: 14px;
+            border: 1px solid #234b76;
+            border-radius: 8px;
+            background: var(--panel-light);
+            color: #dbe9fa;
+            font-size: 14px;
+        }
+        .quick-link:hover, .quick-link:focus { border-color: var(--blue); color: white; }
+        .community-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        .community-card {
+            padding: 18px;
+            border: 1px solid #234b76;
+            border-radius: 9px;
+            background: var(--panel-light);
+        }
+        .community-card h3 { margin: 0 0 7px; font-size: 17px; }
+        .community-card p { margin: 0 0 15px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+        .tip {
+            margin-top: 18px;
+            padding: 16px;
+            border-left: 3px solid var(--green);
+            background: #102941;
+            color: #d6e5f8;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        @media (max-width: 850px) {
+            .nav-links { display: none; }
+            .grid, .content-grid, .profile-grid { grid-template-columns: 1fr 1fr; }
+            .content-grid { margin-top: 16px; }
+        }
+        @media (max-width: 560px) {
+            nav { padding: 0 5%; }
+            main { width: 90%; padding-top: 30px; }
+            .welcome { display: block; }
+            .date { margin-top: 12px; }
+            .grid, .content-grid, .profile-grid { grid-template-columns: 1fr; }
+            .community-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to dashboard</a>
+    <nav aria-label="Main navigation">
+        <a class="brand" href="home.html">SPORT<span>FIT</span></a>
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="workouts.html">Workouts</a>
+            <a href="nutrition.html">Nutrition</a>
+            <a href="progress.html">Progress</a>
+        </div>
+        <button class="logout" id="logoutButton" type="button">Log out</button>
+    </nav>
+
+    <main id="main-content">
+        <section class="welcome" aria-labelledby="dashboard-title">
+            <div>
+                <div class="eyebrow">Personal dashboard</div>
+                <h1 id="dashboard-title">Good morning, <span id="userName">Athlete</span>!</h1>
+                <p>Keep your momentum going. You are closer than you think.</p>
+            </div>
+            <div class="date" id="today"></div>
+        </section>
+
+        <section class="card profile-card" aria-labelledby="profile-title">
+            <div class="profile-heading">
+                <div>
+                    <h2 id="profile-title">Your details</h2>
+                    <p>Keep your fitness information up to date.</p>
+                </div>
+            </div>
+            <form id="profileForm">
+                <div class="profile-grid">
+                    <div class="profile-field">
+                        <label for="userId">User ID</label>
+                        <input id="userId" name="userId" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)*" required>
+                    </div>
+                    <div class="profile-field">
+                        <label for="weight">Weight (kg)</label>
+                        <input id="weight" name="weight" type="number" min="20" max="400" step="0.1" placeholder="e.g. 68">
+                    </div>
+                    <div class="profile-field">
+                        <label for="height">Height (cm)</label>
+                        <input id="height" name="height" type="number" min="80" max="250" step="0.1" placeholder="e.g. 172">
+                    </div>
+                    <div class="profile-field">
+                        <label for="age">Age</label>
+                        <input id="age" name="age" type="number" min="13" max="120" placeholder="e.g. 25">
+                    </div>
+                    <div class="profile-field">
+                        <label for="goal">Main goal</label>
+                        <select id="goal" name="goal">
+                            <option value="Build strength">Build strength</option>
+                            <option value="Lose weight">Lose weight</option>
+                            <option value="Improve fitness">Improve fitness</option>
+                            <option value="Stay active">Stay active</option>
+                        </select>
+                    </div>
+                    <div class="profile-field">
+                        <label for="activity">Activity level</label>
+                        <select id="activity" name="activity">
+                            <option value="Beginner">Beginner</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Very active">Very active</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button class="primary" type="submit">Save details</button>
+                    <span class="profile-message" id="profileMessage" role="status"></span>
+                </div>
+            </form>
+        </section>
+
+        <section class="grid" aria-label="Today's statistics">
+            <article class="card">
+                <div class="metric-label">Weekly streak</div>
+                <div class="metric-value">12 days</div>
+                <div class="metric-note">+2 from last week</div>
+            </article>
+            <article class="card">
+                <div class="metric-label">Workout minutes</div>
+                <div class="metric-value">148</div>
+                <div class="metric-note">74% of weekly goal</div>
+            </article>
+            <article class="card">
+                <div class="metric-label">Calories burned</div>
+                <div class="metric-value">2,460</div>
+                <div class="metric-note">On track this week</div>
+            </article>
+            <article class="card">
+                <div class="metric-label">Fitness points</div>
+                <div class="metric-value">980</div>
+                <div class="metric-note">Rank #4 this month</div>
+            </article>
+        </section>
+
+        <div class="content-grid">
+            <section class="card" aria-labelledby="plan-title">
+                <h2 id="plan-title">Today's plan</h2>
+                <div class="workout">
+                    <div>
+                        <h3>Full-body strength</h3>
+                        <p>Build strength with a focused 25-minute session</p>
+                        <span class="tag">Recommended</span>
+                    </div>
+                    <a class="primary" href="workouts.html">Start</a>
+                </div>
+                <div class="workout">
+                    <div>
+                        <h3>Mobility reset</h3>
+                        <p>Gentle stretches to recover and recharge</p>
+                        <span class="tag">10 minutes</span>
+                    </div>
+                    <a class="primary" href="fitness.html">View</a>
+                </div>
+                <div class="tip"><strong>Coach tip:</strong> A short workout completed consistently beats a perfect plan you never start.</div>
+            </section>
+
+            <section class="card" aria-labelledby="goals-title">
+                <h2 id="goals-title">Weekly goals</h2>
+                <div class="progress-row">
+                    <div class="progress-head"><span>Workout time</span><span>148 / 200 min</span></div>
+                    <div class="bar"><span style="width: 74%"></span></div>
+                </div>
+                <div class="progress-row">
+                    <div class="progress-head"><span>Water intake</span><span>12 / 14 L</span></div>
+                    <div class="bar green"><span style="width: 86%"></span></div>
+                </div>
+                <div class="progress-row">
+                    <div class="progress-head"><span>Active days</span><span>5 / 6 days</span></div>
+                    <div class="bar orange"><span style="width: 83%"></span></div>
+                </div>
+                <a class="primary" href="progress.html">Update progress</a>
+            </section>
+        </div>
+
+        <section class="card" style="margin-top: 18px;" aria-labelledby="quick-title">
+            <h2 id="quick-title">Quick access</h2>
+            <div class="quick-links">
+                <a class="quick-link" href="Accessibility.html">♿ Accessibility assistant</a>
+                <a class="quick-link" href="nutrition.html">🥗 Nutrition planner</a>
+                <a class="quick-link" href="fatigue.html">💤 Fatigue check</a>
+                <a class="quick-link" href="progress.html">📊 Progress tracker</a>
+                <a class="quick-link" href="feedback.html">💬 Send feedback</a>
+                <a class="quick-link" href="Donate.html">❤️ Support SportFit</a>
+            </div>
+        </section>
+
+        <section class="card" style="margin-top: 18px;" aria-labelledby="community-title">
+            <h2 id="community-title">Community</h2>
+            <div class="community-grid">
+                <article class="community-card">
+                    <h3>Help us improve SportFit</h3>
+                    <p>Share an idea, report a problem, or tell us about your experience.</p>
+                    <a class="primary" href="feedback.html">Give feedback</a>
+                </article>
+                <article class="community-card">
+                    <h3>Support accessible fitness</h3>
+                    <p>Your support helps us build more inclusive workouts and better tools for everyone.</p>
+                    <a class="primary" href="Donate.html">Donate now</a>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const email = localStorage.getItem("userEmail") || "";
+        const userName = email ? email.split("@")[0] : "Athlete";
+        const profileKey = "sportfitProfile";
+        let savedProfile = {};
+        try {
+            savedProfile = JSON.parse(localStorage.getItem(profileKey) || "{}");
+        } catch {
+            localStorage.removeItem(profileKey);
+        }
+        const userIdInput = document.getElementById("userId");
+        const profileMessage = document.getElementById("profileMessage");
+        const initialUserId = savedProfile.userId || localStorage.getItem("userUid") || userName;
+
+        document.getElementById("userName").textContent = userName;
+        document.getElementById("today").textContent = new Intl.DateTimeFormat(undefined, {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+        }).format(new Date());
+
+        userIdInput.value = initialUserId;
+        userIdInput.defaultValue = initialUserId;
+        ["weight", "height", "age", "goal", "activity"].forEach((field) => {
+            if (savedProfile[field]) document.getElementById(field).value = savedProfile[field];
+        });
+
+        const lastUserIdChange = Number(savedProfile.userIdChangedAt || 0);
+        const daysUntilUserIdChange = Math.ceil((14 * 24 * 60 * 60 * 1000 - (Date.now() - lastUserIdChange)) / (24 * 60 * 60 * 1000));
+        if (lastUserIdChange && daysUntilUserIdChange > 0) {
+            userIdInput.disabled = true;
+            profileMessage.textContent = `User ID can be changed again in ${daysUntilUserIdChange} day${daysUntilUserIdChange === 1 ? "" : "s"}.`;
+            profileMessage.classList.add("warning");
+        }
+
+        document.getElementById("profileForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const nextProfile = Object.fromEntries(new FormData(event.currentTarget).entries());
+            nextProfile.userId = userIdInput.value;
+            const userIdChanged = nextProfile.userId !== initialUserId;
+            if (userIdChanged && lastUserIdChange && Date.now() - lastUserIdChange < 14 * 24 * 60 * 60 * 1000) {
+                profileMessage.textContent = "Your User ID can only be changed once every 14 days.";
+                profileMessage.classList.add("warning");
+                return;
+            }
+            nextProfile.userIdChangedAt = userIdChanged ? Date.now() : (savedProfile.userIdChangedAt || 0);
+            localStorage.setItem(profileKey, JSON.stringify(nextProfile));
+            savedProfile = nextProfile;
+            userIdInput.defaultValue = nextProfile.userId;
+            profileMessage.textContent = "Details saved.";
+            profileMessage.classList.remove("warning");
+            if (userIdChanged) {
+                userIdInput.disabled = true;
+                profileMessage.textContent = "Details saved. User ID is locked for 14 days.";
+            }
+        });
+
+        document.getElementById("logoutButton").addEventListener("click", async () => {
+            try {
+                await fetch("http://localhost:5000/logout", {
+                    method: "POST",
+                    credentials: "include"
+                });
+            } finally {
+                localStorage.removeItem("userUid");
+                localStorage.removeItem("userEmail");
+                window.location.href = "index.html";
+            }
+        });
+    </script>
+</body>
+</html>
