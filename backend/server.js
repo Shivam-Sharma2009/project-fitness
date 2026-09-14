@@ -4,13 +4,19 @@ const express = require("express");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 
-const { initializeApp, applicationDefault } = require("firebase-admin/app");
+const { initializeApp, applicationDefault, cert } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const { getAuth } = require("firebase-admin/auth");
 
-initializeApp({
-    credential: applicationDefault()
-});
+const firebaseCredential = process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBASE_PRIVATE_KEY
+    ? cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
+    })
+    : applicationDefault();
+
+initializeApp({ credential: firebaseCredential });
 
 const db = getFirestore();
 const auth = getAuth();
