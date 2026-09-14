@@ -21,6 +21,7 @@ initializeApp({ credential: firebaseCredential });
 const db = getFirestore();
 const auth = getAuth();
 const app = express();
+app.set("trust proxy", 1);
 
 const allowedOrigins = (process.env.FRONTEND_ORIGINS || "https://fitcampus-c6dd1.web.app,http://localhost:5500,http://127.0.0.1:5500")
     .split(",")
@@ -190,9 +191,10 @@ app.post("/signup", async (req, res) => {
             });
         }
 
-        if (error.code === "auth/invalid-password" || error.code === "auth/invalid-email") {
+        if (error.code === "auth/invalid-password" || error.code === "auth/invalid-email" ||
+            error.message?.includes("PASSWORD_DOES_NOT_MEET_REQUIREMENTS")) {
             return res.status(400).json({
-                message: "Please provide a valid email and password."
+                message: "Password must be at least 6 characters and include a special character, such as @ or !."
             });
         }
 

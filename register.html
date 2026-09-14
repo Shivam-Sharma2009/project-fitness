@@ -241,6 +241,7 @@ id="password"
 placeholder="Minimum 6 Characters"
 minlength="6"
 required>
+<div class="field-hint">Use at least 6 characters and include a special character, such as @ or !</div>
 </div>
 
 <div class="input-box">
@@ -356,6 +357,11 @@ form.addEventListener("submit", async (e) => {
 
     if (password !== confirmPassword) {
         showAlert("Password and Confirm Password do not match!");
+        return;
+    }
+
+    if (password.length < 6 || !/[^A-Za-z0-9]/.test(password)) {
+        showAlert("Password must be at least 6 characters and include a special character, such as @ or !.");
         return;
     }
 
