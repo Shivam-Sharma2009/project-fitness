@@ -16,7 +16,7 @@ const db = getFirestore();
 const auth = getAuth();
 const app = express();
 
-const allowedOrigins = (process.env.FRONTEND_ORIGINS || "http://localhost:5500,http://127.0.0.1:5500")
+const allowedOrigins = (process.env.FRONTEND_ORIGINS || "https://fitcampus-c6dd1.web.app,http://localhost:5500,http://127.0.0.1:5500")
     .split(",")
     .map((origin) => origin.trim())
     .filter(Boolean);
@@ -207,7 +207,7 @@ app.post("/login", loginRateLimit, loginAccountRateLimit, async (req, res) => {
         }
 
         const response = await fetch(
-            "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD9Sc5Ee6crtVdRCeT1ZyqHAoznta9BbP8",
+            `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.FIREBASE_WEB_API_KEY}`,
             {
                 method: "POST",
                 headers: {
@@ -262,8 +262,12 @@ app.post("/logout", (req, res) => {
     res.json({ message: "Logout successful" });
 });
 
-const PORT = 5000;
+if (require.main === module) {
+    const PORT = 5000;
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;
