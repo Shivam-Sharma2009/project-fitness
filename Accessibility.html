@@ -1141,6 +1141,7 @@ function handleCommandFallback(command){
 // keyword matcher above if the call fails for any reason (no internet, etc).
 
 let conversationHistory = [];
+const AI_BACKEND_URL = "https://project-fitness-drab.vercel.app/api";
 
 const ALLOWED_INTENTS = [
     "coach_me","login","provide_name","start_workout","next_step","stop_workout",
@@ -1175,12 +1176,10 @@ async function classifyIntent(userText){
 "Respond with ONLY valid JSON, no markdown formatting, no extra text, in exactly this shape:\n" +
 '{"intent": "one_of_the_list_above", "entities": {}, "reply": "..."}';
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch(`${AI_BACKEND_URL}/ai/classify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            model: "claude-sonnet-4-6",
-            max_tokens: 300,
             system: systemPrompt,
             messages: [...conversationHistory, { role: "user", content: userText }]
         })

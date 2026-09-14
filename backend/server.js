@@ -8,13 +8,18 @@ const { initializeApp, applicationDefault, cert } = require("firebase-admin/app"
 const { getFirestore } = require("firebase-admin/firestore");
 const { getAuth } = require("firebase-admin/auth");
 
-const firebaseCredential = process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBASE_PRIVATE_KEY
-    ? cert({
+let firebaseCredential;
+if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
+    firebaseCredential = cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON));
+} else if (process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBASE_PRIVATE_KEY) {
+    firebaseCredential = cert({
         projectId: process.env.FIREBASE_PROJECT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
         privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
-    })
-    : applicationDefault();
+    });
+} else {
+    firebaseCredential = applicationDefault();
+}
 
 initializeApp({ credential: firebaseCredential });
 

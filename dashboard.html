@@ -399,7 +399,7 @@
 
         document.getElementById("logoutButton").addEventListener("click", async () => {
             try {
-                await fetch("http://localhost:5000/logout", {
+                await fetch("https://project-fitness-drab.vercel.app/api/logout", {
                     method: "POST",
                     credentials: "include"
                 });
